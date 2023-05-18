@@ -64,7 +64,7 @@ const Offre = {
             }
         )
     },
-    readWithLimit: (itemsPerPage, offset,callback) => {
+    readWithLimit: (itemsPerPage, offset, callback) => {
         db.query(
             "SELECT * FROM Offre,Organisation,Fiche_poste \
             WHERE Offre.organisation = Organisation.siren and Organisation.siren = Fiche_poste.organisation LIMIT ? OFFSET ?",
@@ -88,7 +88,7 @@ const Offre = {
             }
         )
     },
-    countOffres : ( callback) => {
+    countOffres: (callback) => {
         db.query(
             'SELECT COUNT(*) FROM Offre',
             (error, results) => {
@@ -97,6 +97,23 @@ const Offre = {
             }
         );
     },
+    createOffre: (fichePoste, offre, callback) => {
+        db.query(
+            'INSERT INTO Fiche_poste SET ? ', fichePoste,
+            (error, results) => {
+                if (error) throw error;
+                offre.fiche_poste = results.insertId
+                db.query(
+                    'INSERT INTO Offre SET ? ', offre,
+                    (error, results) => {
+                        if (error) throw error;
+                        return callback(null, results)
+                    }
+                )
+            })
+
+    }
+
 
 
 }

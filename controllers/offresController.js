@@ -2,13 +2,14 @@ const Offre = require('../models/offre');
 const pagination = require('pagination');
 
 
-const candidatsController = {
+const offresController = {
+
     getOffres: (req, res) => {
 
         // Nombre d'offres par page
-        const itemsPerPage = 5; 
+        const itemsPerPage = 5;
         // Numero de page en cours
-        const currentPage = parseInt(req.query.page) || 1; 
+        const currentPage = parseInt(req.query.page) || 1;
         // Nombre d'offre à skip
         const offset = (currentPage - 1) * itemsPerPage;
 
@@ -24,8 +25,10 @@ const candidatsController = {
                 } else {
 
                     // Juste un customization du paginator pour utiliser bootstrap
+                    
+
                     const boostrapPaginator = new pagination.TemplatePaginator({
-                        prelink: '/candidats', current: currentPage, rowsPerPage: itemsPerPage,
+                        prelink: req.session.user.type_utilisateur +'/', current: currentPage, rowsPerPage: itemsPerPage,
                         totalResult: totalCount, slashSeparator: true,
                         template: function (result) {
                             var i, len, prelink = result.prelink;
@@ -55,7 +58,7 @@ const candidatsController = {
                     });
 
                     // On affiche le dashboard Candidat avec les offres à afficher 
-                    res.render('candidat/dashboardCandidat', {
+                    res.render(req.session.user.type_utilisateur + '/dashboard', {
                         title: 'Accueil',
                         offres: results,
                         user: req.session.user,
@@ -68,16 +71,55 @@ const candidatsController = {
         })
     },
 
-    voirOffre : (req, res) => {
+    voirOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
-           
-            res.render('candidat/voirOffre', {title:'Offre',user : req.session.user,result: result});
+            if (err) {
+                console.error( err);
+                res.redirect('/');}
+                else{
+                    res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
+                }
+            
         })
-    
-    
-    }
+
+
+    },
+    showAddOffre: (req, res) => {
+        res.render('recruteur/ajouterOffre', { title: 'Ajout offre',user: req.session.user });
+      },
+    addOffre : (req, res) => {
+        const Fiche_poste =  {
+            organisation : req.session.user.organisation,
+            intitule : req.body.intitule,
+            date_ajout : new Date(),
+            responsable : req.body.responsable,
+            type_metier : req.body.typeMetier,
+            rythme : req.body.rythme,
+            fourchette_min : req.body.fourchetteMin,
+            fourchette_max : req.body.fourchetteMax,
+            description : req.body.description
+        }
+        const offre = {
+            organisation : req.session.user.organisation,
+            date_validite : req.body.date_validite,
+            etat : req.body.etat,
+           
+            pcs_demandees : req.body.pcsDemandees
+        }
+
+        Offre.createOffre(Fiche_poste,offre,(req, res) => {
+            res.send("ajoute")})
+
+
+
+            
+
+
+        
+        
+      },
 
 }
 
 
-module.exports = candidatsController;
+module.exports = offresController;
