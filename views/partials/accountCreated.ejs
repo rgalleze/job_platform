@@ -1,0 +1,30 @@
+<%- include("header.ejs") %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img
+          src="https://img.logoipsum.com/286.svg"
+          height="20"
+          alt="Logo"
+          loading="lazy"
+        />
+      </a>
+    </div>
+  </nav>
+<body>
+
+    <div class="d-flex align-items-center justify-content-center" style="height: 350px;">
+        <div class="alert alert-success" role="alert" data-mdb-color="success">
+            <%=message%>
+          </div>
+      </div>
+      
+    
+</body>
+
+<script>
+    setTimeout(function () {
+       // after 2 seconds
+       window.location = "/login";
+    }, 2000)
+  </script>

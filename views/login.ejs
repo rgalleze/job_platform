@@ -1,0 +1,49 @@
+<%- include("partials/header.ejs") %>
+
+    <body>
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
+            <form method="POST">
+                <h2>Bienvenue</h2>
+                <!-- Cette partie s'affiche en cas d'erreur d'auth ! -->
+                <% if (typeof error !='undefined' ) { %>
+                    <div class="alert alert-danger" role="alert" data-mdb-color="danger">
+                        <%= error %>
+                    </div>
+                    <% } %>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input name='email' type="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+                                <input name='password' type="password" class="form-control" id="exampleInputPassword1">
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <button class="w-100 btn btn-success" type="submit">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Sign in</button>
+                        </div>
+
+                        <div class="mb-3">
+                            <p>Pas encore membre ? <a href="/register">Sign up</a></p>
+                        </div>
+            </form>
+        </div>
+
+
+        <%- include("partials/footer.ejs") %>
+       
