@@ -25,10 +25,10 @@ const offresController = {
                 } else {
 
                     // Juste un customization du paginator pour utiliser bootstrap
-                    
+
 
                     const boostrapPaginator = new pagination.TemplatePaginator({
-                        prelink: req.session.user.type_utilisateur +'/', current: currentPage, rowsPerPage: itemsPerPage,
+                        prelink: "/" + req.session.user.type_utilisateur, current: currentPage, rowsPerPage: itemsPerPage,
                         totalResult: totalCount, slashSeparator: true,
                         template: function (result) {
                             var i, len, prelink = result.prelink;
@@ -74,50 +74,53 @@ const offresController = {
     voirOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
             if (err) {
-                console.error( err);
-                res.redirect('/');}
-                else{
-                    res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
-                }
-            
+                console.error(err);
+                res.redirect('/');
+            }
+            else {
+                console.log(result)
+                res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
+            }
+
         })
 
 
     },
     showAddOffre: (req, res) => {
-        res.render('recruteur/ajouterOffre', { title: 'Ajout offre',user: req.session.user });
-      },
-    addOffre : (req, res) => {
-        const Fiche_poste =  {
-            organisation : req.session.user.organisation,
-            intitule : req.body.intitule,
-            date_ajout : new Date(),
-            responsable : req.body.responsable,
-            type_metier : req.body.typeMetier,
-            rythme : req.body.rythme,
-            fourchette_min : req.body.fourchetteMin,
-            fourchette_max : req.body.fourchetteMax,
-            description : req.body.description
+        res.render('recruteur/ajouterOffre', { title: 'Ajout offre', user: req.session.user });
+    },
+    addOffre: (req, res) => {
+        const Fiche_poste = {
+            organisation: req.session.user.organisation,
+            intitule: req.body.intitule,
+            date_ajout: new Date(),
+            responsable: req.body.responsable,
+            type_metier: req.body.typeMetier,
+            rythme: req.body.rythme,
+            fourchette_min: req.body.fourchetteMin,
+            fourchette_max: req.body.fourchetteMax,
+            description: req.body.description
         }
         const offre = {
-            organisation : req.session.user.organisation,
-            date_validite : req.body.date_validite,
-            etat : req.body.etat,
-           
-            pcs_demandees : req.body.pcsDemandees
+            organisation: req.session.user.organisation,
+            date_validite: req.body.date_validite,
+            etat: req.body.etat,
+
+            pcs_demandees: req.body.pcsDemandees
         }
 
-        Offre.createOffre(Fiche_poste,offre,(req, res) => {
-            res.send("ajoute")})
+        Offre.createOffre(Fiche_poste, offre, (req, res) => {
+            res.send("ajoute")
+        })
 
 
 
-            
 
 
-        
-        
-      },
+
+
+
+    },
 
 }
 

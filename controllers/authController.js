@@ -11,10 +11,10 @@ const authController = {
       }
       // 
       else if (req.session.user.type_utilisateur == 'candidat') {
-        res.redirect('candidats');
+        res.redirect('candidat');
       }
       else if (req.session.user.type_utilisateur == 'recruteur') {
-        res.redirect('recruteurs');
+        res.redirect('recruteur');
       }
       else if (req.session.user.type_utilisateur == 'Administrateur') {
         res.redirect('admin');

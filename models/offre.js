@@ -4,19 +4,18 @@ const db = require("./db");
 const Offre = {
     read: (id, callback) => {
         db.query(
-            "SELECT * FROM Offre,Organisation,Fiche_poste \
-            WHERE Offre.organisation = Organisation.siren and Organisation.siren = Fiche_poste.organisation and Offre.num_offre = ?",
+            "SELECT * FROM Offre inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  inner join Organisation on Organisation.siren = Offre.organisation where Offre.num_offre= ?",
             [id],
             (error, results, fields) => {
                 if (error) throw error;
                 results = results.map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
-                    const organisation = Object.fromEntries(data.slice(6, 13));
-                    const fichePoste = Object.fromEntries(data.slice(13));
+                    const fichePoste = Object.fromEntries(data.slice(6, 15));
+                    const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
-                return callback(null, results[0]);
+                callback(null, results[0]);
             }
         );
     },
