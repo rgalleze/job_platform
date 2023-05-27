@@ -1,24 +1,113 @@
 <%- include("../partials/header.ejs")%>
 
-<body>
+  <body>
+    <%- include("../partials/navbar.ejs")%>
+    <div class="container">
+        
+        <div class="mb-5 mt-5 align-self-center">
+         
+          <h3>Postulez dés maintenant !</h3>
+        </div>
+        <div class="row">
+          <div >
+            <form method="post" action="postuler" id="frmFileUpload" enctype="multipart/form-data">
+              <input type="hidden" name="myUsername" value="<%= user.nom %>" />
+              <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">intitule</th>
+                    <th scope="col">Organisation</th>
+                    <th scope="col">Pièces deamndées</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    
+                    <td><%= result.fichePoste.intitule %></td>
+                    <td><%= result.organisation.nom %></td>
+                    <td><%= result.offre.pcs_demandees %></td>
+                  </tr>
+                  
+                  
+                </tbody>
+              </table>
+            
 
-  <%- include("../partials/navbar.ejs")%>
-  <div class="container">
-  <div class="card mb-3">
-    <div class="card-header">
-      <h6><%= result.fichePoste.intitule %> - <%= result.organisation.nom %></h6>
-    </div>
-    <div class="card-body">
-      <!-- <h5 class="card-title">Special title treatment</h5> -->
-      <h6>Salaire : <%= result.fichePoste.fourchette_min %> EUR - <%= result.fichePoste.fourchette_max %> EUR</h6>
-      <h6>Rythme : <%= result.fichePoste.rythme %> </h6>
-      
-      <p class="card-text">Description : <%- result.fichePoste.description %></p>
-      <a href="#" class="btn btn-outline-success">Candidater</a>
-    </div>
-    <div class="card-footer text-muted">
-      <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>
-    </div>
-  </div>
-</div>
-  <%- include("../partials/footer.ejs")%>
+              <div class="row" style="margin-bottom:5px;">
+                <div class="col-8 offset-2">
+                  <select class="form-select" id="file_type" name="myFileType" required="true">
+                    <option value="">--- Type du document ---</option>
+                    <option value="CV">C.V.</option>
+                    <option value="LM">L.M.</option>
+                    <option value="CIN">Carte d'identité</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-bottom:5px;">
+                <div class="col-8 offset-2">
+                  <input class="form-control" id="fileInput" name="myFileInput" type="file" accept="image/*,.pdf"
+                    required="true" />
+                </div>
+              </div>
+
+              <div class="row" style="margin-bottom:5px;">
+                <div class="col text-center">
+                  <a title="Charger le fichier">
+                    <button type="submit" class="btn btn-primary">Charger le fichier</button>
+                  </a>
+                </div>
+              </div>
+
+              <% if(typeof uploaded_filename !='undefined' && typeof uploaded_original !='undefined' ) { %>
+                <div class="row" style="margin: 10px 0px;">
+                  <div class="col text-center">
+                    <span>Le fichier <strong>
+                        <%= uploaded_original %>
+                      </strong> a bien été chargé sous le nom <strong>
+                        <%= uploaded_filename %>
+                      </strong>.</span>
+                  </div>
+                </div>
+                <% } %>
+
+                  <% if(typeof upload_error !='undefined' ) { %>
+                    <div class="row" style="margin: 10px 0px;">
+                      <div class="col text-center text-red">
+                        <span><strong>
+                            <%= upload_error %>
+                          </strong></span>
+                      </div>
+                    </div>
+                    <% } %>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="div-cadre col-10 offset-1 col-lg-8 offset-lg-2">
+            <ul>
+              <% files_array.forEach((oneFile)=> { %>
+                <li><a href="postuler/getfile?fichier_cible=<%= oneFile %>" target="_blank">
+                    <%= oneFile %>
+                  </a></li>
+                <% }) %>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="row" style="margin-bottom:5px;">
+          <div class="col text-center">
+            <a title="Charger le fichier">
+              <button type="submit" class="btn btn-success">Finaliser votre candidature </button>
+            </a>
+          </div>
+        </div>
+        
+
+      </div>
+
+
+
+      <%- include("../partials/footer.ejs")%>

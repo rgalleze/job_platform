@@ -1,5 +1,6 @@
 const Offre = require('../models/offre');
 const pagination = require('pagination');
+// on va utliser Multer comme middleware de gestion d'upload de fichier (faire au préalable : npm install multer)
 
 
 const offresController = {
@@ -86,7 +87,7 @@ const offresController = {
 
 
     },
-    candidaterOffre: (req, res) => {
+    showCandidaterOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
             if (err) {
                 console.error(err);
@@ -94,13 +95,39 @@ const offresController = {
             }
             else {
                 console.log(result)
-                res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result,candidater : 'oui' });
+                if (req.session.uploaded_files == undefined) {
+                    console.log('Init uploaded files array');
+                    req.session.uploaded_files = [];
+                }
+
+                res.render('candidat/candidaterOffre', { title: 'Offre', files_array: req.session.uploaded_files, user: req.session.user, result: result });
             }
 
         })
 
 
     },
+    candidaterOffre: (req, res) => {
+        const uploaded_file = req.file
+        Offre.read(req.params.id, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.redirect('/');
+            }
+            else {
+                if (!uploaded_file) {
+                    res.render('candidat/candidaterOffre', { result: result,title: 'Offre', user: req.session.user, files_array: req.session.uploaded_files, upload_error: 'Merci de sélectionner le fichier à charger !' });
+                } else {
+                    console.log(uploaded_file.originalname, ' => ', uploaded_file.filename);
+                    req.session.uploaded_files.push(uploaded_file.filename);
+                    res.render('candidat/candidaterOffre', { result: result,title: 'Offre', user: req.session.user, files_array: req.session.uploaded_files, uploaded_filename: uploaded_file.filename, uploaded_original: uploaded_file.originalname });
+                }
+            }
+
+
+        })
+    }
+    ,
     showAddOffre: (req, res) => {
         res.render('recruteur/ajouterOffre', { title: 'Ajout offre', user: req.session.user });
     },
@@ -130,10 +157,6 @@ const offresController = {
 
     },
 
-    showCandidaterOffre: (req,res) => {
-        console.log()
-        res.render('candidat/candidaterOffre', { title: 'Candidater offre', user: req.session.user,numOffre : req.body.numOffre });
-    }
 
 }
 
