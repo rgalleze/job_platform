@@ -27,14 +27,19 @@
         <h6><%= result.fichePoste.intitule %> - <%= result.organisation.nom %></h6>
       </div>
       <div class="card-body">
+        <form method='POST' action="candidat/offre/<%= result.offre.num_offre%>/candidater " >
         <!-- <h5 class="card-title">Special title treatment</h5> -->
         <p class="card-text"><%- result.fichePoste.description %></p>
-        <a href="candidat/offre/<%= result.offre.num_offre %>" class="btn btn-outline-primary">Voir</a>
-        <a href="#" class="btn btn-outline-success">Candidater</a>
+        <a href="candidat/offre/<%= result.offre.num_offre%>" class="btn btn-outline-primary">Voir</a>
+        <input name="numOffre" value='<%= result.offre.num_offre %>' hidden></input>
+        <a href="candidat/offre/<%= result.offre.num_offre%>/candidater" class="btn btn-outline-success">Candidater</a>
+        <!-- <a href="candidat/offre/<%= result.offre.num_offre %>/candidater" >Candidater</a> -->
+      </form>
       </div>
       <div class="card-footer text-muted">
         <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>
       </div>
+      
     </div>
     <% }) %>
     <div class="pagination">

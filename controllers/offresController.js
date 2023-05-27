@@ -86,6 +86,21 @@ const offresController = {
 
 
     },
+    candidaterOffre: (req, res) => {
+        Offre.read(req.params.id, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.redirect('/');
+            }
+            else {
+                console.log(result)
+                res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result,candidater : 'oui' });
+            }
+
+        })
+
+
+    },
     showAddOffre: (req, res) => {
         res.render('recruteur/ajouterOffre', { title: 'Ajout offre', user: req.session.user });
     },
@@ -113,14 +128,12 @@ const offresController = {
             res.send("ajoute")
         })
 
-
-
-
-
-
-
-
     },
+
+    showCandidaterOffre: (req,res) => {
+        console.log()
+        res.render('candidat/candidaterOffre', { title: 'Candidater offre', user: req.session.user,numOffre : req.body.numOffre });
+    }
 
 }
 

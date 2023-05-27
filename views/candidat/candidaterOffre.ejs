@@ -1,0 +1,24 @@
+<%- include("../partials/header.ejs")%>
+
+<body>
+
+  <%- include("../partials/navbar.ejs")%>
+  <div class="container">
+  <div class="card mb-3">
+    <div class="card-header">
+      <h6><%= result.fichePoste.intitule %> - <%= result.organisation.nom %></h6>
+    </div>
+    <div class="card-body">
+      <!-- <h5 class="card-title">Special title treatment</h5> -->
+      <h6>Salaire : <%= result.fichePoste.fourchette_min %> EUR - <%= result.fichePoste.fourchette_max %> EUR</h6>
+      <h6>Rythme : <%= result.fichePoste.rythme %> </h6>
+      
+      <p class="card-text">Description : <%- result.fichePoste.description %></p>
+      <a href="#" class="btn btn-outline-success">Candidater</a>
+    </div>
+    <div class="card-footer text-muted">
+      <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>
+    </div>
+  </div>
+</div>
+  <%- include("../partials/footer.ejs")%>
