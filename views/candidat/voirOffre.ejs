@@ -4,7 +4,8 @@
 
     <%- include("../partials/navbar.ejs")%>
       <div class="container">
-        <div class="card mb-3">
+        
+        <div class="card mb-3 mt-5">
           <div class="card-header">
             <h6>
               <%= result.fichePoste.intitule %> - <%= result.organisation.nom %>
@@ -17,50 +18,18 @@
             </h6>
 
             <p class="card-text">Description : <%- result.fichePoste.description %></p>
-            <% if(!locals.candidater){ %>
-              <a href="<%= result.offre.num_offre%>/candidater" class="btn btn-outline-primary">Candidater</a>
-              <% } %>
+            
+              <a href="<%= result.offre.num_offre%>/postuler" class="btn btn-outline-primary">Candidater</a>
+              
 
           </div>
           <div class="card-footer text-muted">
             <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>
           </div>
         </div>
-        <% if(locals.candidater){ %>
-          <form method="post" action="/upload" id="frmFileUpload" enctype="multipart/form-data">
-          <div class="mb-3">
-            <div class="row mb-2">
-              <input type="hidden" name="myUsername" value="<%= user.nom %>" />
-              <div class="col-8 offset-2"><h3>Postuler</h3></div>
-              
-            </div>
-            <div class="row mb-2">
-              <div class="col-8 offset-2">
-                <select class="form-select" id="file_type" name="myFileType" required="true">
-                  <option value="">--- Type du document ---</option>
-                  <option value="CV">C.V.</option>
-                  <option value="LM">L.M.</option>
-                  <option value="CIN">Carte d'identité</option>
-                </select>  
-              </div>
-            </div>
+        
+          
 
-            <div class="row mb-2" >
-              <div class="col-8 offset-2">
-                <input class="form-control" id="fileInput" name="myFileInput" type="file" accept="image/*,.pdf" required="true" />
-              </div>
-            </div>
-            <div class="row" style="margin-bottom:5px;">
-              <div class="col text-center">
-                <a title="Charger le fichier">
-                  <button type="submit" class="btn btn-primary">Charger le fichier</button>
-                </a>
-                </div>
-            </div>
-
-          </form>
-          </div>
-          <% } %>
 
 
       </div>
