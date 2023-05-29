@@ -92,7 +92,7 @@ const authController = {
               return;
             }
             // On affiche une vue pour indiquer que le compte a été crée puis on redirige vers /login
-            res.render('partials/accountCreated', { title:'login',message: 'Votre compte a été crée ! Vous allez être redirigé vers la page de connexion.' });
+            res.render('partials/loading', { title:'login',message: 'Votre compte a été crée ! Vous allez être redirigé vers la page de connexion.' });
           })
         }
       },

@@ -65,8 +65,7 @@ const Offre = {
     },
     readWithLimit: (itemsPerPage, offset, callback) => {
         db.query(
-            "SELECT * FROM Offre,Organisation,Fiche_poste \
-            WHERE Offre.organisation = Organisation.siren and Organisation.siren = Fiche_poste.organisation LIMIT ? OFFSET ?",
+            "SELECT * FROM Offre inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  inner join Organisation on Organisation.siren = Offre.organisation LIMIT ? OFFSET ?",
             [itemsPerPage, offset],
             (error, results) => {
                 if (error) throw error;
@@ -79,8 +78,8 @@ const Offre = {
                 results = results.map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
-                    const organisation = Object.fromEntries(data.slice(6, 13));
-                    const fichePoste = Object.fromEntries(data.slice(13));
+                    const fichePoste = Object.fromEntries(data.slice(6, 15));
+                    const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
                 return callback(null, results);
@@ -96,22 +95,28 @@ const Offre = {
             }
         );
     },
-    createOffre: (fichePoste, offre, callback) => {
-        db.query(
-            'INSERT INTO Fiche_poste SET ? ', fichePoste,
-            (error, results) => {
-                if (error) throw error;
-                offre.fiche_poste = results.insertId
-                db.query(
-                    'INSERT INTO Offre SET ? ', offre,
-                    (error, results) => {
-                        if (error) throw error;
-                        return callback(null, results)
-                    }
-                )
-            })
+    createFichePoste: (fichePoste) => {
+        return new Promise((resolve, reject) => {
+            db.query('INSERT INTO Fiche_poste SET ?', fichePoste,
+                (error, results) => {
+                    if (error) reject(error);
+                    else resolve(results)
+                })
+
+        });
     },
-   
+    createOffre: (offre) => {
+        return new Promise((resolve, reject) => {
+            db.query('INSERT INTO Offre SET ?', offre, (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
+
+
+        })
+    }
+
+
 
 
 
