@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var candidatsRouter = require('./routes/candidats');
 var recruteursRouter = require('./routes/recruteurs');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -27,11 +28,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.all("/recruteur/*", function (req, res, next) {
+  if(req.session.user.type_utilisateur!='recruteur'){
+            res.send("Accés Non autorisé!")
+        }else{next()}
 
+
+});
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/candidat', candidatsRouter);
 app.use('/recruteur', recruteursRouter);
+app.use('/admin', adminRouter);
 
 
 // catch 404 and forward to error handler

@@ -5,6 +5,7 @@ const pagination = require('pagination');
 const offresController = {
 
     getOffres: (req, res) => {
+        
 
         // Nombre d'offres par page
         const itemsPerPage = 5;
@@ -109,9 +110,12 @@ const offresController = {
     },
     
     showAddOffre: (req, res) => {
+      
+        
         res.render('recruteur/ajouterOffre', { title: 'Ajout offre', user: req.session.user });
     },
     addOffre: (req, res) => {
+        
         const Fiche_poste = {
             organisation: req.session.user.organisation,
             intitule: req.body.intitule,
