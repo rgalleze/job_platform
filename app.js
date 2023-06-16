@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.all("/recruteur/*", function (req, res, next) {
   if(req.session.user.type_utilisateur!='recruteur'){
             res.send("Accés Non autorisé!")
