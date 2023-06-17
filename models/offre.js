@@ -6,7 +6,7 @@ const Offre = {
         db.query(
             "SELECT * FROM Offre inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  inner join Organisation on Organisation.siren = Offre.organisation where Offre.num_offre= ?",
             [id],
-            (error, results, fields) => {
+            (error, results) => {
                 if (error) throw error;
                 results = results.map(function (result) {
                     const data = Object.entries(result);
@@ -21,24 +21,31 @@ const Offre = {
     },
     search: (query,itemsPerPage, offset, callback) => {
         db.query(
-            "SELECT * FROM Offre inner join (SELECT * FROM Fiche_poste WHERE Fiche_poste.intitule LIKE ?) as FP on Offre.fiche_poste = FP.id  inner join Organisation on Organisation.siren = Offre.organisation LIMIT ? OFFSET ?",
-            ['%'+query+'%',itemsPerPage, offset],
+            `SELECT COUNT(*) as total 
+            FROM Fiche_poste 
+            WHERE Fiche_poste.intitule 
+            LIKE ?;
+            SELECT *
+            FROM Offre
+            INNER JOIN (
+                SELECT *
+                FROM Fiche_poste
+                WHERE Fiche_poste.intitule LIKE ?
+            )   AS FP ON Offre.fiche_poste = FP.id
+            INNER JOIN Organisation ON Organisation.siren = Offre.organisation
+            LIMIT ? OFFSET ?;`,
+            ['%'+query+'%','%'+query+'%',itemsPerPage, offset],
             (error, results) => {
                 if (error) throw error;
-                // L'idée c'est d'avoir chaque élément de results sous la forme suivante :
-                // {
-                // offre: {num_offre: , organisation: , date_validite: , etat: , fiche_poste: ,pcs_demandees: },
-                // organisation: { siren: ,nom: ,rue: ,ville: ,region: ,code_postal: ,pays:},
-                // fichePoste: {id: ,date_ajout:, intitule: ,responsable: ,type_metier: ,rythme: ,fourchette_min: ,fourchette_max: ,description: }
-                // }
-                results = results.map(function (result) {
+                const totalCount = results[0][0].total;
+                results[1] = results[1].map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
                     const fichePoste = Object.fromEntries(data.slice(6, 15));
                     const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
-                return callback(null, results);
+                return callback(null, results[1],totalCount);
             }
         )
     },
@@ -78,7 +85,11 @@ const Offre = {
     },
     readWithLimit: (itemsPerPage, offset, callback) => {
         db.query(
-            "SELECT * FROM Offre inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  inner join Organisation on Organisation.siren = Offre.organisation LIMIT ? OFFSET ?",
+            `SELECT COUNT(*) as total FROM Fiche_poste;
+            SELECT * FROM Offre 
+            inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  
+            inner join Organisation on Organisation.siren = Offre.organisation 
+            LIMIT ? OFFSET ?`,
             [itemsPerPage, offset],
             (error, results) => {
                 if (error) throw error;
@@ -88,14 +99,15 @@ const Offre = {
                 // organisation: { siren: ,nom: ,rue: ,ville: ,region: ,code_postal: ,pays:},
                 // fichePoste: {id: ,date_ajout:, intitule: ,responsable: ,type_metier: ,rythme: ,fourchette_min: ,fourchette_max: ,description: }
                 // }
-                results = results.map(function (result) {
+                const totalCount = results[0][0].total;
+                results[1] = results[1].map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
                     const fichePoste = Object.fromEntries(data.slice(6, 15));
                     const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
-                return callback(null, results);
+                return callback(null, results[1],totalCount);
             }
         )
     },
