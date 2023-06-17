@@ -20,21 +20,27 @@ const Offre = {
         );
     },
     search: (query,itemsPerPage, offset, callback) => {
-        db.query(
-            `SELECT COUNT(*) as total 
-            FROM Fiche_poste 
-            WHERE Fiche_poste.intitule 
-            LIKE ?;
-            SELECT *
-            FROM Offre
-            INNER JOIN (
-                SELECT *
-                FROM Fiche_poste
-                WHERE Fiche_poste.intitule LIKE ?
-            )   AS FP ON Offre.fiche_poste = FP.id
-            INNER JOIN Organisation ON Organisation.siren = Offre.organisation
-            LIMIT ? OFFSET ?;`,
-            ['%'+query+'%','%'+query+'%',itemsPerPage, offset],
+        let countQuery = `SELECT COUNT(*) as total FROM Fiche_poste inner join Organisation on Fiche_poste.organisation = Organisation.siren
+                            WHERE Fiche_poste.intitule LIKE ? 
+                            AND date_ajout >= NOW() - INTERVAL ? DAY
+                            AND rythme LIKE ?
+                            AND Organisation.nom LIKE ?
+                            `
+
+        let query1 = `(SELECT * FROM Fiche_poste inner join Organisation on Fiche_poste.organisation = Organisation.siren
+            WHERE Fiche_poste.intitule LIKE ? 
+            AND date_ajout >= NOW() - INTERVAL ? DAY
+            AND rythme LIKE ?
+            AND Organisation.nom LIKE ?)`
+        
+        let query2 = countQuery + `; SELECT * FROM Offre INNER JOIN ` + query1 +` AS FP ON Offre.fiche_poste = FP.id  LIMIT ? OFFSET ? `
+        let date_interval = 1900
+        if(query.date_interval != '') date_interval = parseInt(query.date_interval)
+        const searchq = '%'+query.search+'%'
+        const typePoste = '%'+query.typePoste+'%'
+        const entreprise = '%'+query.entreprise+'%'
+        db.query(query2,
+            [searchq,date_interval,typePoste,entreprise,searchq,date_interval,typePoste,entreprise,itemsPerPage, offset],
             (error, results) => {
                 if (error) throw error;
                 const totalCount = results[0][0].total;
@@ -45,6 +51,7 @@ const Offre = {
                     const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
+                console.log(results)
                 return callback(null, results[1],totalCount);
             }
         )

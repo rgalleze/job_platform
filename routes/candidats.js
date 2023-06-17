@@ -8,6 +8,8 @@ var router = express.Router();
 router.get('/', offresController.getOffres);
 router.get('/offre/:id', offresController.voirOffre);
 router.get('/offre/:id/postuler', offresController.showCandidaterOffre);
+router.post('/offre/:id/postuler', offresController.showCandidaterOffre);
+
   
 
 

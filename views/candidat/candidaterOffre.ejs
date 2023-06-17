@@ -12,30 +12,7 @@
           <div >
             <form method="post" action="postuler" id="frmFileUpload" enctype="multipart/form-data">
               <input type="hidden" name="myUsername" value="<%= user.nom %>" />
-              <table class="table">
-                <thead>
-                  <tr>
-                    
-                    <th scope="col">Intitule</th>
-                    <th scope="col">Organisation</th>
-                    <th scope="col">Pièces deamndées</th>
-                    <th scope="col">Salaire</th>
-                    <th scope="col">Rythme</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    
-                    <td><%= result.fichePoste.intitule %></td>
-                    <td><%= result.organisation.nom %></td>
-                    <td><%= result.offre.pcs_demandees %></td>
-                    <td><%= result.fichePoste.fourchette_min %> EUR - <%= result.fichePoste.fourchette_max %> EUR</td>
-                    <td><%= result.fichePoste.rythme %></td>
-                  </tr>
-                  
-                  
-                </tbody>
-              </table>
+             
             
 
               <div class="row" style="margin-bottom:5px;">

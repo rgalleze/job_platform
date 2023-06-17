@@ -6,8 +6,8 @@
 
 
   <div class="container">
-
-    <div class="mb-5 mt-5 align-self-center">
+    <div class="row">
+    <div class="mb-5 mt-5 ">
       <h1> Trouver votre job de rêve !</h1>
       <h6>Vous cherchez un travail ? Parcourez nos dernières offres d'emploi et postulez aux meilleurs emplois
         aujourd'hui.</h6>
@@ -20,33 +20,31 @@
       <button type="submit" class="btn btn-outline-primary">search</button>
       
 
-    </form>
+    </div>
     
       <div class="row">
         <div class="col">
-          <select class="form-select mb-3 " aria-label="Default select example">
-            <option selected>Date de publication</option>
-            <option value="1">D</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <select name ='date_interval'  class="form-select mb-3 " aria-label="Date de publication">
+            <option value ='' selected>Date de publication</option>
+            <option value=1>Dernières 24 heures </option>
+            <option value=3>3 derniers jours</option>
+            <option value=7>7 derniers jours</option>
+            <option value=14>14 derniers jours</option>
           </select>
         </div>
         <div class="col">
-          <select class="form-select mb-3 " aria-label="Default select example">
-            <option selected>Type de poste</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <select name ='typePoste' class="form-select mb-3 " aria-label="Default select example">
+            <option value ='' selected>Type de poste</option>
+            <option value="CDI">CDI</option>
+            <option value="CDD">CDD</option>
+            <option value="Stage">Stage</option>
+            <option value="Alternance">Alternance</option>
           </select>
         </div>
         <div class="col">
-          <select class="form-select mb-3 " aria-label="Default select example">
-            <option selected>Entreprise</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+          <input name="entreprise" class="form-control " placeholder="Entreprise">
         </div>
+      </form>
         
       </div>
  
@@ -56,7 +54,7 @@
       
     <div class="card mb-3">
       <div class="card-header">
-        <h6><%= result.fichePoste.intitule %> - <%= result.organisation.nom %></h6>
+        <h6><%= result.fichePoste.intitule %> - <%= result.organisation.nom %> - <%= result.fichePoste.rythme %></h6>
       </div>
       <div class="card-body">
         <p class="card-text"><%- result.fichePoste.description %></p>

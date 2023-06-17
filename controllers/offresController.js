@@ -1,3 +1,4 @@
+const { query } = require('express');
 const Offre = require('../models/offre');
 const pagination = require('pagination');
 
@@ -6,8 +7,11 @@ const generateBoostrapPaginator = (req, currentPage, itemsPerPage, totalCount) =
         prelink: "/" + req.session.user.type_utilisateur, current: currentPage, rowsPerPage: itemsPerPage,
         totalResult: totalCount, slashSeparator: true,
         template: function (result) {
-            if (req.query.search) prelink = result.prelink + '?search=' + req.query.search + '&'
-            else prelink = result.prelink + '?'
+            prelink = result.prelink
+            if (req.query.search || req.query.date_interval ||req.query.typePoste || req.query.entreprise ){
+                prelink = prelink + '?search=' + req.query.search + '&' + 'date_interval=' + req.query.date_interval + '&' + 'typePoste=' + req.query.typePoste +'&' + 'entreprise=' + req.query.entreprise +'&'
+            }
+            else prelink = prelink + '?'
             var html = '<div><ul class="pagination">';
             if (result.pageCount < 2) {
                 html += '</ul></div>';
@@ -40,8 +44,9 @@ const offresController = {
         const itemsPerPage = 5;
         const currentPage = parseInt(req.query.page) || 1;
         const offset = (currentPage - 1) * itemsPerPage;
-        if (req.query.search) {
-            Offre.search(req.query.search, itemsPerPage, offset, (err, results, totalCount) => {
+        console.log(req.query)
+        if (req.query.search || req.query.date_interval ||req.query.typePoste || req.query.entreprise  ) {
+            Offre.search(req.query, itemsPerPage, offset, (err, results, totalCount) => {
                 if (err) {
                     console.error('Error fetching offres: ', err);
                     res.redirect('/');
