@@ -32,8 +32,26 @@ readAll: (callback) => {
         }
     );
 },
+readCandidatures: (user_id) => {
+    return new Promise((resolve, reject) => {
+        db.query('Select * from Dossier_candidature where utilisateur = ? ',user_id,
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
 
+    });
+},
+deleteCandidature: (id) =>{
+    return new Promise((resolve, reject) => {
+        db.query('DELETE FROM Dossier_candidature WHERE Dossier_candidature.id = ? ',id,
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
 
+    });
+}
 }
 
 module.exports = user;

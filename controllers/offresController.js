@@ -2,6 +2,7 @@ const { query } = require('express');
 const Offre = require('../models/offre');
 const pagination = require('pagination');
 const fs = require('fs');
+const { error } = require('console');
 
 
 
@@ -120,7 +121,6 @@ const offresController = {
         })
 
     },
-
     showAddOffre: (req, res) => {
 
 
@@ -174,11 +174,10 @@ const offresController = {
         } else {
           console.log(uploaded_file.originalname,' => ',uploaded_file.filename);
           req.session.uploaded_files.push(uploaded_file.filename);
-          res.render('candidat/candidaterOffre',{title:'Postuler',user : req.session.user, files_array : req.session.uploaded_files, uploaded_filename : uploaded_file.filename, uploaded_original:uploaded_file.originalname});
+          res.redirect('../postuler')
         }
       
       },
-
     getfile: (req,res, next) => {
         try {
             res.download('./mesfichiers/'+req.query.fichier_cible);
@@ -187,7 +186,6 @@ const offresController = {
           }
         
     },
-
     deletefile: (req,res) =>{
         fs.unlink('./mesfichiers/'+req.query.fichier_supp, (err) => {
             if (err) {
@@ -201,10 +199,29 @@ const offresController = {
         
 
 
-    }
-      
+    },
+    candidaterOffre: (req,res) =>{
+        const pathFiles = req.session.uploaded_files.join(',')
 
-
+        const data_candidature = {
+            dateCandidature: new Date(),
+            statut: 'en attente de traitement',
+            utilisateur: req.session.user.id,
+            offre: req.params.id,
+            pathFiles: pathFiles
+        }
+        console.log(data_candidature)
+        const promise = Offre.candidaterOffre(data_candidature)
+            .then((results)=>{
+                res.render('partials/loading', { title: 'Accueil', message: 'Merci d\'avoir postulé !' });
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        
+    },
+   
+    
 }
 
 

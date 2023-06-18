@@ -10,7 +10,7 @@
         </div>
         <div class="row">
           <div>
-            <form method="post" action="postuler" id="frmFileUpload" enctype="multipart/form-data">
+            <form method="post" action="postuler/upload" id="frmFileUpload" enctype="multipart/form-data">
               <input type="hidden" name="myUsername" value="<%= user.nom %>_<%= user.prenom %>_<%= user.id %>" />
 
 
@@ -108,7 +108,7 @@
             </form>
           </div>
         </div>
-
+        <form method="post" action="postuler" >
         <div class="row" style="margin-bottom:5px;">
           <div class="col text-center">
             <a title="Charger le fichier">
@@ -116,6 +116,7 @@
             </a>
           </div>
         </div>
+      </form>
 
 
       </div>

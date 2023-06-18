@@ -1,5 +1,7 @@
 var express = require('express');
 const offresController = require('../controllers/offresController')
+const usersController = require('../controllers/usersController')
+
 var router = express.Router();
 var multer = require('multer');  
 
@@ -16,11 +18,14 @@ var upload = multer({ storage: my_storage })
 
 
 router.get('/', offresController.getOffres);
+router.get('/mesCandidatures', usersController.getCandidatures);
+router.get('/mesCandidatures/delete', usersController.deleteCandidature);
 router.get('/offre/:id', offresController.voirOffre);
 router.get('/offre/:id/postuler', offresController.showCandidaterOffre);
-router.post('/offre/:id/postuler',upload.single('myFileInput'), offresController.upload);
+router.post('/offre/:id/postuler/upload',upload.single('myFileInput'), offresController.upload);
 router.get('/offre/:id/postuler/getfile', offresController.getfile);
 router.get('/offre/:id/postuler/delete', offresController.deletefile);
+router.post('/offre/:id/postuler', offresController.candidaterOffre);
 
 
 

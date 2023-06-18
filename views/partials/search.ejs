@@ -1,0 +1,36 @@
+
+
+        <form class="input-group mb-3 mt-3">
+
+            <input name='search' type="search" class="form-control " placeholder="Rechercher par poste ou mots clés"
+                aria-label="Search" aria-describedby="search-addon">
+            <button type="submit" class="btn btn-outline-primary">search</button>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <select name='date_interval' class="form-select mb-3 " aria-label="Date de publication">
+                <option value='' selected>Date de publication</option>
+                <option value=1>Dernières 24 heures </option>
+                <option value=3>3 derniers jours</option>
+                <option value=7>7 derniers jours</option>
+                <option value=14>14 derniers jours</option>
+            </select>
+        </div>
+        <div class="col">
+            <select name='typePoste' class="form-select mb-3 " aria-label="Default select example">
+                <option value='' selected>Type de poste</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="Stage">Stage</option>
+                <option value="Alternance">Alternance</option>
+            </select>
+        </div>
+        <div class="col">
+            <input name="entreprise" class="form-control " placeholder="Entreprise">
+        </div>
+        </form>
+
+    </div>

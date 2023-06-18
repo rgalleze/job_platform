@@ -20,16 +20,12 @@ const authController = {
         res.redirect('admin');
       }
     },
-
-    
     showLogin : (req, res) => {
         res.render('login', { title: 'login' });
       },
-
     showRegister : (req, res) => {
         res.render('register', { title: 'register' });
       },
-
     login :  async  (req, res) => {
         User.read(req.body.email, async (error, user) => {
           if (user == null) {
@@ -96,7 +92,6 @@ const authController = {
           })
         }
       },
-
       logout :  (req, res) =>{
         // On détruit la session
         req.session.destroy(function (err) {
@@ -108,7 +103,6 @@ const authController = {
           }
         });
       }
-
     }
 
 module.exports = authController;

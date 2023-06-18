@@ -56,16 +56,6 @@ const Offre = {
             }
         )
     },
-    filter: (query, callback) => {
-        db.query(
-            'SELECT * FROM Offre WHERE date_ajout >= NOW() - INTERVAL ? DAY ',
-            query,
-            (error, results, fields) => {
-                if (error) throw error;
-                return callback(null, results);
-            }
-        );
-    },
     readAll: (callback) => {
         db.query(
             "SELECT * FROM Offre,Organisation,Fiche_poste \
@@ -118,15 +108,7 @@ const Offre = {
             }
         )
     },
-    countOffres: (callback) => {
-        db.query(
-            'SELECT COUNT(*) FROM Offre',
-            (error, results) => {
-                if (error) throw error;
-                return callback(null, results[0]);
-            }
-        );
-    },
+    
     createFichePoste: (fichePoste) => {
         return new Promise((resolve, reject) => {
             db.query('INSERT INTO Fiche_poste SET ?', fichePoste,
@@ -146,6 +128,16 @@ const Offre = {
 
 
         })
+    },
+    candidaterOffre: (data) => {
+        return new Promise((resolve, reject) => {
+            db.query('INSERT INTO Dossier_candidature SET ?', data,
+                (error, results) => {
+                    if (error) reject(error);
+                    else resolve(results)
+                })
+
+        });
     }
 
 
