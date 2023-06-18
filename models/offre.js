@@ -51,7 +51,7 @@ const Offre = {
                     const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
-                console.log(results)
+                //console.log(results)
                 return callback(null, results[1],totalCount);
             }
         )
