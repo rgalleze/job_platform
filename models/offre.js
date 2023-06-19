@@ -80,14 +80,45 @@ const Offre = {
             }
         )
     },
-    readWithLimit: (itemsPerPage, offset, callback) => {
+    readWithLimit: (org,itemsPerPage, offset, callback) => {
+        if(!org) org = ''
         db.query(
-            `SELECT COUNT(*) as total FROM Fiche_poste;
+            `SELECT COUNT(*) as total FROM Fiche_poste where organisation like ? ;
+            SELECT * FROM Offre 
+            inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  
+            inner join Organisation on Organisation.siren = Offre.organisation
+            where Offre.organisation like ? 
+            LIMIT ? OFFSET ?`,
+            ['%'+org+'%','%'+org+'%',itemsPerPage, offset],
+            (error, results) => {
+                if (error) throw error;
+                // L'idée c'est d'avoir chaque élément de results sous la forme suivante :
+                // {
+                // offre: {num_offre: , organisation: , date_validite: , etat: , fiche_poste: ,pcs_demandees: },
+                // organisation: { siren: ,nom: ,rue: ,ville: ,region: ,code_postal: ,pays:},
+                // fichePoste: {id: ,date_ajout:, intitule: ,responsable: ,type_metier: ,rythme: ,fourchette_min: ,fourchette_max: ,description: }
+                // }
+                const totalCount = results[0][0].total;
+                results[1] = results[1].map(function (result) {
+                    const data = Object.entries(result);
+                    const offre = Object.fromEntries(data.slice(0, 6));
+                    const fichePoste = Object.fromEntries(data.slice(6, 15));
+                    const organisation = Object.fromEntries(data.slice(15));
+                    return { offre: offre, organisation: organisation, fichePoste: fichePoste }
+                })
+                return callback(null, results[1],totalCount);
+            }
+        )
+    },
+    readWithLimitByOrg: (org,itemsPerPage, offset, callback) => {
+        db.query(
+            `SELECT COUNT(*) as total FROM Fiche_poste where organisation = ?;
             SELECT * FROM Offre 
             inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  
             inner join Organisation on Organisation.siren = Offre.organisation 
+            WHERE Offre.organisation = ?
             LIMIT ? OFFSET ?`,
-            [itemsPerPage, offset],
+            [org,org,itemsPerPage, offset],
             (error, results) => {
                 if (error) throw error;
                 // L'idée c'est d'avoir chaque élément de results sous la forme suivante :

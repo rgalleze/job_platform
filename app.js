@@ -29,13 +29,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.all("/recruteur/*", function (req, res, next) {
+app.all("/recruteur*", function (req, res, next) {
   if(req.session.user.type_utilisateur!='recruteur'){
             res.send("Accés Non autorisé!")
         }else{next()}
-
-
 });
+
+app.all("/candidat*", function (req, res, next) {
+  if(req.session.user.type_utilisateur!='candidat'){
+            res.send("Accés Non autorisé!")
+        }else{next()}
+});
+
+app.all("/admin*", function (req, res, next) {
+  if(req.session.user.type_utilisateur!='Administrateur'){
+            res.send("Accés Non autorisé!")
+        }else{next()}
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/candidat', candidatsRouter);

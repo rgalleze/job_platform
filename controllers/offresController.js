@@ -65,21 +65,24 @@ const offresController = {
             }
             )
         } else {
-            Offre.readWithLimit(itemsPerPage, offset, (err, results, totalCount) => {
-                if (err) {
-                    console.error('Error fetching offres: ', err);
-                    res.redirect('/');
-                } else {
-                    const boostrapPaginator = generateBoostrapPaginator(req, currentPage, itemsPerPage, totalCount);
-                    res.render(req.session.user.type_utilisateur + '/dashboard', {
-                        title: 'Accueil',
-                        offres: results,
-                        user: req.session.user,
-                        paginator: boostrapPaginator.render(),
-                    });
+                Offre.readWithLimit(req.session.user.organisation,itemsPerPage, offset, (err, results, totalCount) => {
+                    if (err) {
+                        console.error('Error fetching offres: ', err);
+                        res.redirect('/');
+                    } else {
+                        const boostrapPaginator = generateBoostrapPaginator(req, currentPage, itemsPerPage, totalCount);
+                        console.log(results)
+                        res.render(req.session.user.type_utilisateur + '/dashboard', {
+                            title: 'Accueil',
+                            offres: results,
+                            user: req.session.user,
+                            paginator: boostrapPaginator.render(),
+                        });
+                    }
                 }
-            }
-            )
+                )
+            
+            
         }
     },
     voirOffre: (req, res) => {
