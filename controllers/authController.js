@@ -18,10 +18,10 @@ const authController = {
     },
     showLogin : (req, res) => {
         res.render('login', { title: 'login' });
-      },
+    },
     showRegister : (req, res) => {
         res.render('register', { title: 'register' });
-      },
+    },
     login :  async  (req, res) => {
         User.read(req.body.email, async (error, user) => {
           if (user == null) {
@@ -37,7 +37,7 @@ const authController = {
             }
           }
         })
-      },
+    },
     register : async (req, res) =>{
         // On crée un schéma à suivre pour valider les inputs user
         const schema = Joi.object({
@@ -87,8 +87,8 @@ const authController = {
             res.render('partials/loading', { title:'login',message: 'Votre compte a été crée ! Vous allez être redirigé vers la page de connexion.' });
           })
         }
-      },
-      logout :  (req, res) =>{
+    },
+    logout :  (req, res) =>{
         // On détruit la session
         req.session.destroy(function (err) {
           if (err) {
@@ -98,6 +98,6 @@ const authController = {
             res.redirect('/login');
           }
         });
-      }
+    }
     }
 module.exports = authController;

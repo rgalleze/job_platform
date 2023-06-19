@@ -49,7 +49,7 @@ const offresController = {
         const currentPage = parseInt(req.query.page) || 1;
         const offset = (currentPage - 1) * itemsPerPage;
         if (req.query.search || req.query.date_interval || req.query.typePoste || req.query.entreprise) {
-            Offre.search(req.query, itemsPerPage, offset, (err, results, totalCount) => {
+            Offre.search(req.session.user.organisation,req.query, itemsPerPage, offset, (err, results, totalCount) => {
                 if (err) {
                     console.error('Error fetching offres: ', err);
                     res.redirect('/');
@@ -218,6 +218,41 @@ const offresController = {
             })
 
     },
+    showEditOffre: (req, res) => {
+        Offre.read(req.params.id,(err,results)=>{
+            if(err) throw new Error(err)
+            else{
+                res.render(req.session.user.type_utilisateur+'/editOffre',{title :'Edit offre', user: req.session.user, result : results})
+            }
+        })
+        
+    },
+    editOffre: (req, res) => {
+
+        const data = {
+            intitule: req.body.intitule,
+            responsable: req.body.responsable,
+            type_metier: req.body.typeMetier,
+            rythme: req.body.rythme,
+            fourchette_min: req.body.fourchetteMin,
+            fourchette_max: req.body.fourchetteMax,
+            description: req.body.description,
+            date_validite: req.body.date_validite,
+            etat: req.body.etat,
+            pcs_demandees: req.body.pcsDemandees
+        }
+       
+
+        const promise = Offre.updateOffre(req.params.id,req.body.fichePoste_id,data)
+            .then((results) => {
+                res.send('updated')
+                
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    }
 }
 
 

@@ -28,9 +28,15 @@
                 <option value="Alternance">Alternance</option>
             </select>
         </div>
-        <div class="col">
-            <input name="entreprise" class="form-control " placeholder="Entreprise">
-        </div>
+        <% if (user.type_utilisateur == 'recruteur') { %>
+           
+            <%} else { %>
+                <div class="col">
+                    <input name="entreprise" class="form-control " placeholder="Entreprise">
+                </div>
+            <% } %>
+        
+        
         </form>
 
     </div>

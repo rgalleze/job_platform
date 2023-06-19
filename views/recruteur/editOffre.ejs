@@ -1,0 +1,76 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+            <div class="container d-flex justify-content-center align-items-center" style="height:80vh;">
+                <form method='POST' >
+                    <h2>Modifier une offre</h2>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Intitulé</label>
+                            <input name='intitule' type="text" class="form-control" value='<%= result.fichePoste.intitule %>'>                            
+                            <input name='fichePoste_id' type="text" hidden class="form-control" value='<%= result.fichePoste.id %>'>
+
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Responsable</label>
+                            <input name='responsable' type="text" class="form-control" value='<%= result.fichePoste.responsable %>'>
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Type métier</label>
+                            <input name='typeMetier' type="text" class="form-control" value='<%= result.fichePoste.type_metier %>'>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Rythme</label>
+                            <input name='rythme' type="text" class="form-control" value='<%= result.fichePoste.rythme %>'>
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Salaire min</label>
+                            <input name='fourchetteMin' type="number" class="form-control" value='<%= result.fichePoste.fourchette_min %>'>
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Salaire max</label>
+                            <input name='fourchetteMax' type="number" class="form-control" value='<%= result.fichePoste.fourchette_max %>'>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                            <textarea name='description' class="form-control" id="exampleFormControlTextarea1" rows="3"><%= result.fichePoste.description %></textarea>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Date validité</label>
+                            <input name='date_validite' type="date" class="form-control" value='<%= result.offre.date_validite.toLocaleDateString("fr") %>'>
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">État</label>
+                            <input name='etat' type="text" class="form-control" value='<%= result.offre.etat %>'>
+
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Pièces deamndées</label>
+                            <input name='pcsDemandees' type="text" class="form-control" value='<%= result.offre.pcs_demandees %>'>
+
+                        </div>
+                        <div class="mb-3">
+                            <button class="w-100 btn btn-success" type="submit">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Update</button>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </form>
+            </div>
+            <%- include("../partials/footer.ejs")%>

@@ -3,6 +3,12 @@
 <body>
 
   <%- include("../partials/navbar.ejs")%>
+  <div class="container">
+    <div class="row">
+        <div class="mb-5 mt-5 ">
+            <h1> Gestion des offres d'emploi !</h1>
+            <h6>Parcourez vos dernières offres d'emploi</h6>
+        </div>
 
   <div class="container">
   <div class="card mb-3">
@@ -15,7 +21,8 @@
       <h6>Rythme : <%= result.fichePoste.rythme %> </h6>
       
       <p class="card-text">Description : <%- result.fichePoste.description %></p>
-      <a href="#" class="btn btn-outline-success">Supprimer</a>
+      <a href="#" class="btn btn-outline-danger">Supprimer</a>
+      <a href="<%= result.offre.num_offre %>/edit" class="btn btn-outline-primary">Modifier</a>
     </div>
     <div class="card-footer text-muted">
       <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>
