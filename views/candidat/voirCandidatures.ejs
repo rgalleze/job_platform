@@ -28,8 +28,13 @@
                                 <td><a href="./offre/<%= candidature.offre %>" class="btn btn-sm btn-outline-primary">Voir</a></td>
                                 <td><%= candidature.dateCandidature.toLocaleDateString("fr") %></td>
                                 <td><%= candidature.statut %></td>
-                                <td><a href="mesCandidatures/delete?id_candidature=<%= candidature.id %>"
-                                    class="text-reset"><span class="badge rounded-pill bg-danger">Retirer</span></a></td>
+                                <% if (candidature.statut == 'en attente de traitement') { %>
+                                    <td><a href="mesCandidatures/delete?id_candidature=<%= candidature.id %>"
+                                        class="text-reset"><span class="badge rounded-pill bg-danger">Retirer</span></a></td>
+                                    <%} else { %>
+                                        <td><span class="badge rounded-pill bg-secondary">Indisponible</span></td>
+                                    <% } %>
+                                
                                 
                               </tr>
                               

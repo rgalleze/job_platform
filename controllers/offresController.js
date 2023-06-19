@@ -6,15 +6,15 @@ const { error } = require('console');
 
 
 
-  
+// Générateur de pagination
 const generateBoostrapPaginator = (req, currentPage, itemsPerPage, totalCount) => {
     return new pagination.TemplatePaginator({
         prelink: "/" + req.session.user.type_utilisateur, current: currentPage, rowsPerPage: itemsPerPage,
         totalResult: totalCount, slashSeparator: true,
         template: function (result) {
             prelink = result.prelink
-            if (req.query.search || req.query.date_interval ||req.query.typePoste || req.query.entreprise ){
-                prelink = prelink + '?search=' + req.query.search + '&' + 'date_interval=' + req.query.date_interval + '&' + 'typePoste=' + req.query.typePoste +'&' + 'entreprise=' + req.query.entreprise +'&'
+            if (req.query.search || req.query.date_interval || req.query.typePoste || req.query.entreprise) {
+                prelink = prelink + '?search=' + req.query.search + '&' + 'date_interval=' + req.query.date_interval + '&' + 'typePoste=' + req.query.typePoste + '&' + 'entreprise=' + req.query.entreprise + '&'
             }
             else prelink = prelink + '?'
             var html = '<div><ul class="pagination">';
@@ -44,13 +44,11 @@ const generateBoostrapPaginator = (req, currentPage, itemsPerPage, totalCount) =
 };
 
 const offresController = {
-
     getOffres: (req, res) => {
         const itemsPerPage = 5;
         const currentPage = parseInt(req.query.page) || 1;
         const offset = (currentPage - 1) * itemsPerPage;
-        //console.log(req.query)
-        if (req.query.search || req.query.date_interval ||req.query.typePoste || req.query.entreprise  ) {
+        if (req.query.search || req.query.date_interval || req.query.typePoste || req.query.entreprise) {
             Offre.search(req.query, itemsPerPage, offset, (err, results, totalCount) => {
                 if (err) {
                     console.error('Error fetching offres: ', err);
@@ -65,9 +63,7 @@ const offresController = {
                     });
                 }
             }
-
             )
-
         } else {
             Offre.readWithLimit(itemsPerPage, offset, (err, results, totalCount) => {
                 if (err) {
@@ -83,11 +79,9 @@ const offresController = {
                     });
                 }
             }
-
             )
         }
     },
-
     voirOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
             if (err) {
@@ -95,15 +89,12 @@ const offresController = {
                 res.redirect('/');
             }
             else {
-                //console.log(result)
                 res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
             }
         })
-
     },
     showCandidaterOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
-            
             if (err) {
                 console.error(err);
                 res.redirect('/');
@@ -117,9 +108,7 @@ const offresController = {
 
                 res.render('candidat/candidaterOffre', { title: 'Offre', files_array: req.session.uploaded_files, user: req.session.user, result: result });
             }
-
         })
-
     },
     showAddOffre: (req, res) => {
 
@@ -166,41 +155,41 @@ const offresController = {
 
 
     },
-    upload: (req,res, next) => {
+    upload: (req, res, next) => {
         const uploaded_file = req.file
-      
+
         if (!uploaded_file) {
-          res.render('candidat/candidaterOffre',{title:'Postuler',user : req.session.user, files_array : req.session.uploaded_files, upload_error : 'Merci de sélectionner le fichier à charger !'});
+            res.render('candidat/candidaterOffre', { title: 'Postuler', user: req.session.user, files_array: req.session.uploaded_files, upload_error: 'Merci de sélectionner le fichier à charger !' });
         } else {
-          console.log(uploaded_file.originalname,' => ',uploaded_file.filename);
-          req.session.uploaded_files.push(uploaded_file.filename);
-          res.redirect('../postuler')
+            //console.log(uploaded_file.originalname,' => ',uploaded_file.filename);
+            req.session.uploaded_files.push(uploaded_file.filename);
+            res.redirect('../postuler')
         }
-      
-      },
-    getfile: (req,res, next) => {
-        try {
-            res.download('./mesfichiers/'+req.query.fichier_cible);
-          } catch (error) {
-            res.send('Une erreur est survenue lors du téléchargement de '+req.query.fichier_cible+' : '+error);
-          }
-        
+
     },
-    deletefile: (req,res) =>{
-        fs.unlink('./mesfichiers/'+req.query.fichier_supp, (err) => {
+    getfile: (req, res, next) => {
+        try {
+            res.download('./mesfichiers/' + req.query.fichier_cible);
+        } catch (error) {
+            res.send('Une erreur est survenue lors du téléchargement de ' + req.query.fichier_cible + ' : ' + error);
+        }
+
+    },
+    deletefile: (req, res) => {
+        fs.unlink('./mesfichiers/' + req.query.fichier_supp, (err) => {
             if (err) {
-                res.render('candidat/candidaterOffre',{title:'Postuler',user : req.session.user, files_array : req.session.uploaded_files, upload_error : 'Une erreur est survenue lors de la suppression'});
+                res.render('candidat/candidaterOffre', { title: 'Postuler', user: req.session.user, files_array: req.session.uploaded_files, upload_error: 'Une erreur est survenue lors de la suppression' });
             } else {
                 const index = req.session.uploaded_files.indexOf(req.query.fichier_supp)
-                req.session.uploaded_files.splice(index,1)
+                req.session.uploaded_files.splice(index, 1)
                 res.redirect('../postuler');
             }
-          });
-        
+        });
+
 
 
     },
-    candidaterOffre: (req,res) =>{
+    candidaterOffre: (req, res) => {
         const pathFiles = req.session.uploaded_files.join(',')
 
         const data_candidature = {
@@ -210,18 +199,22 @@ const offresController = {
             offre: req.params.id,
             pathFiles: pathFiles
         }
-        console.log(data_candidature)
+        //console.log(data_candidature)
         const promise = Offre.candidaterOffre(data_candidature)
-            .then((results)=>{
-                res.render('partials/loading', { title: 'Accueil', message: 'Merci d\'avoir postulé !' });
+            .then((results) => {
+                if (results == 'Déjà candidaté') {
+                    res.render('candidat/candidaterOffre', { title: 'Postuler', user: req.session.user, files_array: req.session.uploaded_files, upload_error: 'Vous avez déjà postuler à cette offre (voir vos candidatures)' });
+                } else {
+                    res.render('partials/loading', { title: 'Postuler', message: 'Votre candidature a été prise en compte ! À bientôt' })
+
+                }
+
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error)
             })
-        
+
     },
-   
-    
 }
 
 

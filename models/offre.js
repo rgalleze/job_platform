@@ -131,12 +131,22 @@ const Offre = {
     },
     candidaterOffre: (data) => {
         return new Promise((resolve, reject) => {
-            db.query('INSERT INTO Dossier_candidature SET ?', data,
-                (error, results) => {
-                    if (error) reject(error);
-                    else resolve(results)
-                })
-
+            db.query('SELECT * from Dossier_candidature Where offre = ? and utilisateur = ?',[data.offre,data.utilisateur],
+            (error,results) => {
+                console.log(results)
+                if(results.length != 0) {
+                    console.log(results)
+                    resolve('Déjà candidaté')
+                }   
+                else{
+                    db.query('INSERT INTO Dossier_candidature SET ?', data,
+                    (error, results) => {
+                        if (error) reject(error);
+                        else resolve(results)
+                    })
+                }
+            })            
+            
         });
     }
 

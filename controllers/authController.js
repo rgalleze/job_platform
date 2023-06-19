@@ -1,15 +1,11 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-
-
 const authController = {
     firstLoad :  (req, res ) => {
-      // Si aucune session active on affiche page login
       if (!req.session.user) {
         res.redirect('/login');
       }
-      // 
       else if (req.session.user.type_utilisateur == 'candidat') {
         res.redirect('candidat');
       }
@@ -104,5 +100,4 @@ const authController = {
         });
       }
     }
-
 module.exports = authController;
