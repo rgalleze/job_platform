@@ -172,26 +172,16 @@ const Offre = {
                 })
         })
     },
-    updateFichePoste: (fichePoste, data) => {
+    readCandidaturesOffre: (offre) =>{
         return new Promise((resolve, reject) => {
-            db.query(`UPDATE Fiche_poste 
-            SET intitule = ?, 
-            responsable = ?, 
-            type_metier = ?,
-            rythme = ?,
-            fourchette_min = ?,
-            fourchette_max = ?,
-            description = ?
-            WHERE id = ?; `,
-                [data.intitule, data.responsable, data.type_metier, data.rythme, data.fourchette_min, data.fourchette_max,
-                    data.description, fichePoste], (error, results) => {
-                    if (error) reject(error);
-                    else resolve(results)
-                })
+            db.query('SELECT * FROM Dossier_candidature as d inner join Utilisateur as u on d.utilisateur=u.id  where offre = ? ', offre, (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
         })
 
     }
-
+    
 
 
 

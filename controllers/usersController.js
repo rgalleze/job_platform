@@ -10,7 +10,7 @@ const usersController = {
             console.log(error)
         })
 
-        //
+        
     },
     deleteCandidature: (req,res) =>{
         const promise = User.deleteCandidature(parseInt(req.query.id_candidature))

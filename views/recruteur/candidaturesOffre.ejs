@@ -1,0 +1,88 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+            <div class="container">
+                <div class="row">
+                    <div class="mb-5 mt-5 align-self-center">
+                        <h1> Les candidatures </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Candidat</th>
+                                <th scope="col">Date candidature</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Dossier</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% candidatures.forEach(function(candidature) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= candidature.id %>
+                                    </th>
+                                    <td>
+                                        <%= candidature.nom %>
+                                            <%= candidature.prenom %>
+                                    </td>
+                                    <td>
+                                        <%= candidature.dateCandidature.toLocaleDateString("fr") %>
+                                    </td>
+                                    <td>
+                                        <%= candidature.statut %>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-warning dropdown-toggle" type="button"
+                                                id="dropdownMenuButton2" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Télécharger
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-dark"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <li><a class="dropdown-item active"
+                                                        href="candidatures/getfile?fichier_cible=<%= candidature.nom %>_<%= candidature.prenom %>_<%= candidature.utilisateur %>-CV.pdf">CV</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                        href="candidatures/getfile?fichier_cible=<%= candidature.nom %>_<%= candidature.prenom %>_<%= candidature.utilisateur %>-LM.pdf">Lettre
+                                                        motivation</a></li>
+                                                <li><a class="dropdown-item"
+                                                        href="candidatures/getfile?fichier_cible=<%= candidature.nom %>_<%= candidature.prenom %>_<%= candidature.utilisateur %>-CIN.pdf">CIN</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton2" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Action
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <li><a class="dropdown-item active"
+                                                        href="">Refuser</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                        href="">Accepter</a></li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <% }) %>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <%- include("../partials/footer.ejs")%>

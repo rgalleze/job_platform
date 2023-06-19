@@ -39,55 +39,55 @@ const authController = {
         })
     },
     register : async (req, res) =>{
-        // On crée un schéma à suivre pour valider les inputs user
-        const schema = Joi.object({
-          nom: Joi.string().alphanum().min(3).max(30).required(),
-          prenom: Joi.string().alphanum().min(3).max(30).required(),
-          email: Joi.string().email({ minDomainSegments: 2 }),
-          mot_de_passe: Joi.string()
-            .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-            .required()
-            .messages({
-              "string.pattern.base": `Password should be between 3 to 30 characters and contain letters or numbers only`,
-              "string.empty": `Password cannot be empty`,
-              "any.required": `Password is required`,
-            }),
-          date_creation: Joi.date().required(),
-          statut_compte: Joi.string().valid('actif'),
-          // Par défault le type d'utilisateur est candidat
-          type_utilisateur: Joi.string().valid('candidat')
-        });
-      
-        // On valide les inputs user 
-        const { error, value } = schema.validate({
-          nom: req.body.nom,
-          prenom: req.body.prenom,
-          email: req.body.email,
-          mot_de_passe: req.body.password,
-          date_creation: new Date(),
-          statut_compte: 'actif',
-          type_utilisateur: 'candidat'
-        });
-      
-        if (error) {
-          // Si les inputs ne sont pas valides on affiche l'erreur 
-          res.render('register', { title: 'register', error : error });
-        } else {
-          // On utilise middleware bcrypt pour hasher le mot de passe 
-          const hashedPassword = await bcrypt.hash(value.mot_de_passe, 10)
-          // On supprime le mot de passe en clair, on manipule que le hash
-          delete value.mot_de_passe
-          value.hash_motdepasse = hashedPassword
-          User.create(value, (error, user) => {
-            if (error) {
-              console.log(error);
-              return;
-            }
-            // On affiche une vue pour indiquer que le compte a été crée puis on redirige vers /login
-            res.render('partials/loading', { title:'login',message: 'Votre compte a été crée ! Vous allez être redirigé vers la page de connexion.' });
-          })
-        }
-    },
+      // On crée un schéma à suivre pour valider les inputs user
+      const schema = Joi.object({
+        nom: Joi.string().alphanum().min(3).max(30).required(),
+        prenom: Joi.string().alphanum().min(3).max(30).required(),
+        email: Joi.string().email({ minDomainSegments: 2 }),
+        mot_de_passe: Joi.string()
+          .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+          .required()
+          .messages({
+            "string.pattern.base": `Password should be between 3 to 30 characters and contain letters or numbers only`,
+            "string.empty": `Password cannot be empty`,
+            "any.required": `Password is required`,
+          }),
+        date_creation: Joi.date().required(),
+        statut_compte: Joi.string().valid('actif'),
+        // Par défault le type d'utilisateur est candidat
+        type_utilisateur: Joi.string().valid('candidat')
+      });
+    
+      // On valide les inputs user 
+      const { error, value } = schema.validate({
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        email: req.body.email,
+        mot_de_passe: req.body.password,
+        date_creation: new Date(),
+        statut_compte: 'actif',
+        type_utilisateur: 'candidat'
+      });
+    
+      if (error) {
+        // Si les inputs ne sont pas valides on affiche l'erreur 
+        res.render('register', { title: 'register', error : error });
+      } else {
+        // On utilise middleware bcrypt pour hasher le mot de passe 
+        const hashedPassword = await bcrypt.hash(value.mot_de_passe, 10)
+        // On supprime le mot de passe en clair, on manipule que le hash
+        delete value.mot_de_passe
+        value.hash_motdepasse = hashedPassword
+        User.create(value, (error, user) => {
+          if (error) {
+            console.log(error);
+            return;
+          }
+          // On affiche une vue pour indiquer que le compte a été crée puis on redirige vers /login
+          res.render('partials/loading', { title:'login',message: 'Votre compte a été crée ! Vous allez être redirigé vers la page de connexion.' });
+        })
+      }
+  },
     logout :  (req, res) =>{
         // On détruit la session
         req.session.destroy(function (err) {

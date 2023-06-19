@@ -1,47 +1,50 @@
-<%- include("../partials/header.ejs")%>
 
-    <body>
 
-        <%- include("../partials/navbar.ejs")%>
-            <div class="container">
-                <div class="row">
-                    <div class="mb-5 mt-5 align-self-center">
-                        <h1> Mes candidatures - <%= user.nom %> <%= user.prenom %></h1>
+            <%- include("../partials/header.ejs")%>
+
+            <body>
+        
+                <%- include("../partials/navbar.ejs")%>
+                    <div class="container">
+                        <div class="row">
+                            <div class="mb-5 mt-5 align-self-center">
+                                <h1> Mes candidatures - <%= user.nom %> <%= user.prenom %></h1>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                      <th scope="col">ID</th>
+                                      <th scope="col">Offre</th>
+                                      <th scope="col">Date candidature</th>
+                                      <th scope="col">Statut</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                            <% candidatures.forEach(function(candidature) { %>
+                                      <tr>
+                                        <th scope="row"><%= candidature.id %></th>
+                                        <td><a href="./offre/<%= candidature.offre %>" class="btn btn-sm btn-outline-primary">Voir</a></td>
+                                        <td><%= candidature.dateCandidature.toLocaleDateString("fr") %></td>
+                                        <td><%= candidature.statut %></td>
+                                        <% if (candidature.statut == 'en attente de traitement') { %>
+                                            <td><a href="mesCandidatures/delete?id_candidature=<%= candidature.id %>"
+                                                class="text-reset"><span class="badge rounded-pill bg-danger">Retirer</span></a></td>
+                                            <%} else { %>
+                                                <td><span class="badge rounded-pill bg-secondary">Indisponible</span></td>
+                                            <% } %>
+                                        
+                                        
+                                      </tr>
+                                      
+                                <% }) %>
+                            </tbody>
+                        </table>
+        
+                        </div>
+        
                     </div>
-                </div>
-
-                <div class="row">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                              <th scope="col">ID</th>
-                              <th scope="col">Offre</th>
-                              <th scope="col">Date</th>
-                              <th scope="col">Statut</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                    <% candidatures.forEach(function(candidature) { %>
-                              <tr>
-                                <th scope="row"><%= candidature.id %></th>
-                                <td><a href="./offre/<%= candidature.offre %>" class="btn btn-sm btn-outline-primary">Voir</a></td>
-                                <td><%= candidature.dateCandidature.toLocaleDateString("fr") %></td>
-                                <td><%= candidature.statut %></td>
-                                <% if (candidature.statut == 'en attente de traitement') { %>
-                                    <td><a href="mesCandidatures/delete?id_candidature=<%= candidature.id %>"
-                                        class="text-reset"><span class="badge rounded-pill bg-danger">Retirer</span></a></td>
-                                    <%} else { %>
-                                        <td><span class="badge rounded-pill bg-secondary">Indisponible</span></td>
-                                    <% } %>
-                                
-                                
-                              </tr>
-                              
-                        <% }) %>
-                    </tbody>
-                </table>
-
-                </div>
-
-            </div>
+                    <%- include("../partials/footer.ejs")%>

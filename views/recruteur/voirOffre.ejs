@@ -23,6 +23,8 @@
       <p class="card-text">Description : <%- result.fichePoste.description %></p>
       <a href="#" class="btn btn-outline-danger">Supprimer</a>
       <a href="<%= result.offre.num_offre %>/edit" class="btn btn-outline-primary">Modifier</a>
+      <a href="<%= result.offre.num_offre %>/candidatures"  class="btn btn-outline-info">Consulter candidatures</a>
+
     </div>
     <div class="card-footer text-muted">
       <%= result.fichePoste.date_ajout.toLocaleDateString("fr") %>

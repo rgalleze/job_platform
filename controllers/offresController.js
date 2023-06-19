@@ -114,8 +114,6 @@ const offresController = {
         })
     },
     showAddOffre: (req, res) => {
-
-
         res.render('recruteur/ajouterOffre', { title: 'Ajout offre', user: req.session.user });
     },
     addOffre: (req, res) => {
@@ -245,7 +243,20 @@ const offresController = {
 
         const promise = Offre.updateOffre(req.params.id,req.body.fichePoste_id,data)
             .then((results) => {
-                res.send('updated')
+                res.render('partials/loading',{title: 'Update offre',user: req.session.user, message: 'Votre offre a été mis à jour !'})
+                
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    },
+    getCandidaturesOffre: (req, res) => {
+        const promise = Offre.readCandidaturesOffre(req.params.id)
+            .then((results) => {
+                
+                
+                res.render('recruteur/candidaturesOffre',{title:'Candidatures',user: req.session.user,candidatures : results})
                 
             })
             .catch((error) => {
