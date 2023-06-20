@@ -55,6 +55,7 @@ const offresController = {
                     res.redirect('/');
                 } else {
                     const boostrapPaginator = generateBoostrapPaginator(req, currentPage, itemsPerPage, totalCount);
+                    console.log(results)
                     res.render(req.session.user.type_utilisateur + '/dashboard', {
                         title: 'Accueil',
                         offres: results,
@@ -71,7 +72,7 @@ const offresController = {
                         res.redirect('/');
                     } else {
                         const boostrapPaginator = generateBoostrapPaginator(req, currentPage, itemsPerPage, totalCount);
-                        console.log(results)
+                        //console.log(results)
                         res.render(req.session.user.type_utilisateur + '/dashboard', {
                             title: 'Accueil',
                             offres: results,

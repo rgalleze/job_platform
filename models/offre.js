@@ -20,7 +20,10 @@ const Offre = {
         );
     },
     search: (org, query, itemsPerPage, offset, callback) => {
-        if (!org) org = ''
+        //console.log(org)
+        if (!org){
+            org = ''
+        }
         let countQuery = `SELECT COUNT(*) as total FROM Fiche_poste inner join Organisation on Fiche_poste.organisation = Organisation.siren
                             WHERE Fiche_poste.intitule LIKE ? 
                             AND date_ajout >= NOW() - INTERVAL ? DAY
@@ -42,7 +45,11 @@ const Offre = {
         if (query.date_interval != '') date_interval = parseInt(query.date_interval)
         const searchq = '%' + query.search + '%'
         const typePoste = '%' + query.typePoste + '%'
-        const entreprise = '%' + query.entreprise + '%'
+        let entreprise 
+        if(org) entreprise = '%%'
+        else entreprise = '%' + query.entreprise + '%'
+        
+        console.log(entreprise)
         db.query(query2,
             [searchq, date_interval, typePoste, entreprise, '%' + org + '%', searchq, date_interval, typePoste, entreprise, '%' + org + '%', itemsPerPage, offset],
             (error, results) => {
@@ -85,6 +92,7 @@ const Offre = {
         )
     },
     readWithLimit: (org, itemsPerPage, offset, callback) => {
+
         if (!org) org = ''
         db.query(
             `SELECT COUNT(*) as total FROM Fiche_poste where organisation like ? ;
@@ -138,9 +146,9 @@ const Offre = {
         return new Promise((resolve, reject) => {
             db.query('SELECT * from Dossier_candidature Where offre = ? and utilisateur = ?', [data.offre, data.utilisateur],
                 (error, results) => {
-                    console.log(results)
+                    //console.log(results)
                     if (results.length != 0) {
-                        console.log(results)
+                        //console.log(results)
                         resolve('Déjà candidaté')
                     }
                     else {

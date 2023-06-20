@@ -1,0 +1,60 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+            <div class="container d-flex justify-content-center align-items-center" style="height:80vh;">
+                <form method='POST' >
+                    <h2>Ajouter une organisation </h2>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Nom</label>
+                            <input name='nom' type="text" class="form-control">
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">SIREN</label>
+                            <input name='siren' type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Rue</label>
+                            <input name='rue' type="text" class="form-control">
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Ville</label>
+                            <input name='ville' type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Region</label>
+                            <input name='region' type="text" class="form-control">
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Code postal</label>
+                            <input name='code_postal' type="number" class="form-control">
+                        </div>
+                        <div class="col-sm mb-3">
+                            <label for="exampleInputName" class="form-label">Pays</label>
+                            <input name='pays' type="text" class="form-control">
+                        </div>
+                        
+                    </div>
+                  
+                   
+                        <div class="mb-3">
+                            <button class="w-100 btn btn-success" type="submit">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Créer</button>
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </form>
+            </div>
+            <%- include("../partials/footer.ejs")%>

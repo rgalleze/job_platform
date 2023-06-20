@@ -4,26 +4,33 @@
 
     <%- include("../partials/navbar.ejs")%>
 
-    <%- include("../partials/footer.ejs")%>
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
-        <form method="POST">
+      <%- include("../partials/footer.ejs")%>
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
+          <form method="GET">
             <h2>Devenir recruteur</h2>
-            
-            <div class="form-group mb-3">
-                <label class='mb-3' for="answer">Votre organisation existe déjà ?</label>
-                <select class="form-control" id="answer">
-                  <option value="yes">Non</option>
-                  <option value="no">Oui</option>
-                </select>
-              </div>
 
-            
-            
-            <div class="mb-3">
-                <button class="w-100 btn btn-success" type="submit">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    Faire la demande</button>
+            <div class="form-group mb-3">
+              <div> <label class='mb-3' for="answer">Votre organisation existe déjà ?</label>
+              </div>
+              <a href="rec_apply/form" class="text-reset"><span class="btn btn-outline-success">Oui</span></a>
+
+              <a href="rec_apply/form/organisation" class="text-reset"><span class="btn btn-outline-warning">Non</span></a>
+
+
             </div>
-           
-        </form>
-    </div>
+            <div id="dynamicDiv" style="display: none;">
+              <!-- Content of the dynamically displayed div -->
+              <h3>This div is displayed based on your answer!</h3>
+            </div>
+
+
+
+            <div class="mb-3">
+
+            </div>
+
+          </form>
+        </div>
+
+
+        <%- include("../partials/footer.ejs") %>

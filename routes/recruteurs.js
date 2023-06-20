@@ -1,8 +1,11 @@
 var express = require('express');
 const offresController = require('../controllers/offresController')
+const usersController = require('../controllers/usersController')
+
 var router = express.Router();
 
 router.get('/', offresController.getOffres);
+router.get('/demandes', usersController.showDemandesRec);
 router.get('/offre/ajouter', offresController.showAddOffre);
 router.post('/offre/ajouter', offresController.addOffre);
 

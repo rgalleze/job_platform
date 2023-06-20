@@ -1,0 +1,54 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+            <div class="container">
+                <div class="row">
+                    <div class="mb-5 mt-5 align-self-center">
+                        <h1> Les demandes recruteurs </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Utilisateur</th>
+                                <th scope="col">Date demande</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% demandes.forEach(function(demande) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= demande.id %>
+                                    </th>
+                                    <td>
+                                        <%= demande.nom %>
+                                            <%= demande.prenom %>
+                                    </td>
+                                    <td>
+                                        <%= demande.date_demande.toLocaleDateString("fr") %>
+                                    </td>
+                                    <td>
+                                        <%= demande.statut %>
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+
+                                <% }) %>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <%- include("../partials/footer.ejs")%>

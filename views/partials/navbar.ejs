@@ -26,14 +26,14 @@
           <% break; case 'recruteur' : %>
 
             <li class="nav-item">
-              <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une offre</a>
+              <a class="nav-link mx-2" href="/recruteur/offre/ajouter">Ajouter une offre</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link mx-2" href="#">Demandes</a>
+              <a class="nav-link mx-2" href="/recruteur/demandes">Demandes</a>
             </li>
             <% break; case 'Administrateur' : %>
               <li class="nav-item">
-                <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une organisation</a>
+                <a class="nav-link mx-2" href="/recruteur/offre/ajouter">Ajouter une organisation</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-2" href="#">Gérér les utilisateurs</a>
@@ -49,7 +49,7 @@
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="#">Mon profil</a></li>
                     <% if(user.type_utilisateur=='candidat' ){ %>
-                      <li><a class="dropdown-item" href="candidat/rec_apply">Devenir recruteur</a></li>
+                      <li><a class="dropdown-item" href="/candidat/rec_apply">Devenir recruteur</a></li>
                       <% } %>
                       <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
                   </ul>

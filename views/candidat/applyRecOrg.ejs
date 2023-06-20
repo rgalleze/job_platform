@@ -1,0 +1,29 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+
+            <%- include("../partials/footer.ejs")%>
+                <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
+                    <form method="POST">
+                        <h2>Devenir recruteur</h2>
+                        <form method="post">
+                            <label class='mb-3'>Choisir votre organisation</label>
+                            <select name ='id_org' class="form-select mb-3" id="country-dropdown">
+                                <option value="">-- choisir --</option>
+                                <% orgs.forEach(function(org) { %>
+                                    <option value="<%= org.siren%>">
+                                        <%= org.nom%>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                            <button class="w-100 btn btn-success" type="submit">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Demander à rejoindre</button>
+
+
+
+
+                        </form>
+                        <%- include("../partials/footer.ejs") %>

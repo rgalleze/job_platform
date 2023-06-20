@@ -19,6 +19,12 @@ var upload = multer({ storage: my_storage })
 
 router.get('/', offresController.getOffres);
 router.get('/rec_apply', usersController.showRecApply);
+router.get('/rec_apply/form', usersController.showRecApplyOrg);
+router.post('/rec_apply/form', usersController.recApply);
+router.get('/rec_apply/form/organisation', usersController.showAddOrg);
+router.post('/rec_apply/form/organisation', usersController.AddOrgRec);
+
+
 router.get('/mesCandidatures', usersController.getCandidatures);
 router.get('/mesCandidatures/delete', usersController.deleteCandidature);
 router.get('/offre/:id', offresController.voirOffre);
