@@ -9,8 +9,6 @@ const usersController = {
         .catch((error)=>{
             console.log(error)
         })
-
-        
     },
     deleteCandidature: (req,res) =>{
         const promise = User.deleteCandidature(parseInt(req.query.id_candidature))
@@ -23,6 +21,10 @@ const usersController = {
 
         //
     },
+    showRecApply: (req,res) =>{
+        res.render('candidat/applyRec',{title :'Devenir recruteur',user: req.session.user})
+
+    }
     
 }
 

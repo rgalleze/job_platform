@@ -1,62 +1,60 @@
-<nav class="navbar navbar-expand-lg navbar-light  p-2" >
-    <div class="container">
-      <a class="navbar-brand" href="#">SR10 - Job portal</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-     
-      <span class=" rounded-pill badge bg-primary "><%= user.type_utilisateur %></span>
-                
+<nav class="navbar navbar-expand-lg navbar-light  p-2">
+  <div class="container">
+    <a class="navbar-brand" href="#">SR10 - Job portal</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto ">
+    <span class=" rounded-pill badge bg-primary ">
+      <%= user.type_utilisateur %>
+    </span>
+
+
+    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto ">
+        <li class="nav-item">
+          <a class="nav-link mx-2 " aria-current="page" href="/">Accueil</a>
+        </li>
+
+
+        <% switch (user.type_utilisateur) { case 'candidat' : %>
+
           <li class="nav-item">
-            <a class="nav-link mx-2 " aria-current="page" href="/">Accueil</a>
+            <a class="nav-link mx-2" href="/candidat/mesCandidatures">Mes candidatures</a>
           </li>
-          
-         
-            <% switch (user.type_utilisateur) {
-                case 'candidat' : %>
-               
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="/candidat/mesCandidatures">Mes candidatures</a>
-                  </li>
-                        <% break;
-                
-                case 'recruteur' : %>
-               
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une offre</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Demandes</a>
-                  </li>
-                        <% break;
-                
-                case 'Administrateur' : %>
-                <li class="nav-item">
-                  <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une organisation</a>
+          <% break; case 'recruteur' : %>
+
+            <li class="nav-item">
+              <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une offre</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-2" href="#">Demandes</a>
+            </li>
+            <% break; case 'Administrateur' : %>
+              <li class="nav-item">
+                <a class="nav-link mx-2" href="recruteur/offre/ajouter">Ajouter une organisation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-2" href="#">Gérér les utilisateurs</a>
+              </li>
+              <% break; } %>
+
+                <li class="nav-item dropdown">
+
+                  <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= user.nom %>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Mon profil</a></li>
+                    <% if(user.type_utilisateur=='candidat' ){ %>
+                      <li><a class="dropdown-item" href="candidat/rec_apply">Devenir recruteur</a></li>
+                      <% } %>
+                      <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+                  </ul>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link mx-2" href="#">Gérér les utilisateurs</a>
-                </li>
-                        <% break;
-                
-                } %>
-                
-          <li class="nav-item dropdown">
-            
-            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <%= user.nom %>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Mon profil</a></li>
-              <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

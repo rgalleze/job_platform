@@ -1,0 +1,29 @@
+<%- include("../partials/header.ejs")%>
+
+  <body>
+
+    <%- include("../partials/navbar.ejs")%>
+
+    <%- include("../partials/footer.ejs")%>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
+        <form method="POST">
+            <h2>Devenir recruteur</h2>
+            
+            <div class="form-group mb-3">
+                <label class='mb-3' for="answer">Votre organisation existe déjà ?</label>
+                <select class="form-control" id="answer">
+                  <option value="yes">Non</option>
+                  <option value="no">Oui</option>
+                </select>
+              </div>
+
+            
+            
+            <div class="mb-3">
+                <button class="w-100 btn btn-success" type="submit">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Faire la demande</button>
+            </div>
+           
+        </form>
+    </div>
