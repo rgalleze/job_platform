@@ -6,6 +6,9 @@ var router = express.Router();
 
 router.get('/', offresController.getOffres);
 router.get('/demandes', usersController.showDemandesRec);
+router.get('/demandes/approve', usersController.acceptDemandeRec);
+router.get('/demandes/refuse', usersController.refuseDemandeRec);
+
 router.get('/offre/ajouter', offresController.showAddOffre);
 router.post('/offre/ajouter', offresController.addOffre);
 

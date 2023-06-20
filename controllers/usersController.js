@@ -94,6 +94,24 @@ const usersController = {
         .catch((error)=>{
             console.log(error)
         })
+    },
+    acceptDemandeRec: (req, res) => {
+        const promise = User.acceptRec(req.query.id,req.session.user.organisation)
+        .then((results)=>{
+            res.redirect('./')
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    },
+    refuseDemandeRec: (req, res) => {
+        const promise = User.refuseRec(req.query.id,req.session.user.organisation)
+        .then((results)=>{
+            res.redirect('./')
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
     }
 
     

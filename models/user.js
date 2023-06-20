@@ -63,12 +63,32 @@ updateRec: (data) =>{
 },
 readDemandesRec: (org) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM `Demande_recruteur` as d inner join Utilisateur as u on d.utilisateur = u.id where d.organisation = ? ',org,
+        db.query("SELECT * FROM `Demande_recruteur` as d inner join Utilisateur as u on d.utilisateur = u.id where d.organisation = ? and d.statut='non traite' ",org,
             (error, results) => {
                 if (error) reject(error);
                 else resolve(results)
             })
 
+    });
+},
+acceptRec: (id,org) =>{
+    return new Promise((resolve, reject) => {
+        db.query("UPDATE `Demande_recruteur` SET statut = 'accepte' WHERE utilisateur = ?;UPDATE Utilisateur SET type_utilisateur = 'recruteur', organisation = ? WHERE id = ? ",
+        [id,org,id],
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
+    });
+},
+refuseRec: (id,org) =>{
+    return new Promise((resolve, reject) => {
+        db.query("UPDATE `Demande_recruteur` SET statut = 'refuse' WHERE utilisateur = ?; ",
+        [id],
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
     });
 }
 }

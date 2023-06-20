@@ -37,6 +37,15 @@
                                         <%= demande.statut %>
                                     </td>
                                     <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Gérer
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                              <li><a class="dropdown-item" href="demandes/approve?id=<%= demande.id %>">Accepter</a></li>
+                                              <li><a class="dropdown-item" href="demandes/refuse?id=<%= demande.id %>">Refuser</a></li>
+                                            </ul>
+                                          </div>
                                         
                                     </td>
                                     <td>
