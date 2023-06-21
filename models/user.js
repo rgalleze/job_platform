@@ -22,6 +22,26 @@ read: (email, callback) => {
         }
     );
 },
+delete: (id) => {
+    return new Promise((resolve, reject) => {
+        db.query("Delete from Utilisateur where id = ? ",
+        [id],
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
+    }); 
+},
+updateStatut: (id,statut) => {
+    return new Promise((resolve, reject) => {
+        db.query("Update  Utilisateur set statut_compte = ? where id = ? ",
+        [statut,id],
+            (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
+    }); 
+},
 readAll: (callback) => {
     db.query(
         'SELECT * FROM Utilisateur',

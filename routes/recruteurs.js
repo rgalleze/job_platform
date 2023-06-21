@@ -20,6 +20,7 @@ router.get('/offre/:id/delete', offresController.deleteOffre);
 
 
 router.get('/offre/:id/candidatures', offresController.getCandidaturesOffre);
+router.get('/offre/:id/candidatures/accept', offresController.acceptCandidature);
 router.get('/offre/:id/candidatures/getfile', offresController.getfile);
 
 

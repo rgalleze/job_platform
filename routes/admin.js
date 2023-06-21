@@ -5,6 +5,11 @@ const usersController = require('../controllers/usersController')
 var router = express.Router();
 
 router.get('/', offresController.getOffres);
+router.get('/users', usersController.getUsers);
+router.get('/users/delete', usersController.deleteUser);
+router.get('/users/update', usersController.UpdateStatutUser);
+
+
 router.get('/org/ajouter', usersController.showAddOrg);
 router.post('/org/ajouter', usersController.AddOrgAdmin);
 

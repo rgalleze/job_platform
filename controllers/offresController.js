@@ -268,7 +268,6 @@ const offresController = {
         const promise = Offre.readCandidaturesOffre(req.params.id)
             .then((results) => {
                 
-                
                 res.render('recruteur/candidaturesOffre',{title:'Candidatures',user: req.session.user,candidatures : results})
                 
             })
@@ -276,6 +275,15 @@ const offresController = {
                 console.log(error)
             })
 
+    },
+    acceptCandidature: (req,res) =>{
+        const promise = Offre.acceptCandidature(parseInt(req.query.id_c),parseInt(req.query.id_u))
+        .then((results)=>{
+            res.redirect('./')
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
     }
 }
 

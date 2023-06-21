@@ -1,0 +1,84 @@
+<%- include("../partials/header.ejs")%>
+
+    <body>
+
+        <%- include("../partials/navbar.ejs")%>
+            <div class="container">
+                <div class="row">
+                    <div class="mb-5 mt-5 align-self-center">
+                        <h1> Les utilisateurs </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Date création</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Org</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(function(user) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= user.id %>
+                                    </th>
+                                    <td>
+                                        <%= user.type_utilisateur %>
+                                    </td>
+                                    <td>
+                                        <%= user.email %>
+                                    </td>
+                                    <td>
+                                        <%= user.nom %>
+                                    </td>
+                                    <td>
+                                        <%= user.prenom %>
+                                    </td>
+                                    <td>
+                                        <%= user.date_creation.toLocaleDateString("fr") %>
+                                    </td>
+                                    <td>
+                                        <%= user.statut_compte %>
+                                    </td>
+                                    <td>
+                                        <%= user.organisation %>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Gérer
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                              <li><a class="dropdown-item" href="users/delete?id=<%= user.id %>">Supprimer</a></li>
+                                              <li><a class="dropdown-item" href="users/update?id=<%= user.id %>&s=bannis">Bannir</a></li>
+                                              <li><a class="dropdown-item" href="users/update?id=<%= user.id %>&s=inactif">Désactiver</a></li>
+                                              <% if(user.type_utilisateur == 'candidat' || user.type_utilisateur == 'recruteur' ){ %>
+                                                <li><a class="dropdown-item" href="">Rendre admin</a></li>
+                                             <% } %>
+                                             
+                                              
+                                            </ul>
+                                          </div>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+
+                                <% }) %>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <%- include("../partials/footer.ejs")%>

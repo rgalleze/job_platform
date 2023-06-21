@@ -196,6 +196,15 @@ const Offre = {
             })
         })
 
+    },
+    acceptCandidature: (id_user,id_candidature) =>{
+        return new Promise((resolve, reject) => {
+            db.query("Update Dossier_candidature set statut = 'accepte' where utilisateur = ? and offre = ?", [id_user,id_candidature], (error, results) => {
+                if (error) reject(error);
+                else resolve(results)
+            })
+        })
+
     }
     
 

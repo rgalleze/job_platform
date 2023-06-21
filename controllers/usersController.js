@@ -131,6 +131,33 @@ const usersController = {
             console.log(error)
         })
     },
+    getUsers: (req,res) => {
+        User.readAll((err,results)=>{
+            if(results){
+                res.render('admin/displayUsers',{title: 'Users',user: req.session.user,users : results})
+            }
+        })
+    },
+    deleteUser: (req,res) => {
+        const promise = User.delete(req.query.id)
+        .then((results)=>{
+            res.redirect('./')
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+
+    },
+    UpdateStatutUser: (req,res) => {
+        const promise = User.updateStatut(req.query.id,req.query.s)
+        .then((results)=>{
+            res.redirect('./')
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+
+    }
 
     
 }
