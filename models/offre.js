@@ -180,6 +180,14 @@ const Offre = {
                 })
         })
     },
+    deleteOffre: (offre,fichePoste) => {
+        return new Promise((resolve,reject) => {
+            db.query('DELETE  FROM Offre where num_offre = ?;DELETE FROM Fiche_poste where id = ?;',[offre,fichePoste],(error, results) =>{
+                if (error) reject(error);
+                else resolve(results)
+            })
+        })
+    },
     readCandidaturesOffre: (offre) =>{
         return new Promise((resolve, reject) => {
             db.query('SELECT * FROM Dossier_candidature as d inner join Utilisateur as u on d.utilisateur=u.id  where offre = ? ', offre, (error, results) => {

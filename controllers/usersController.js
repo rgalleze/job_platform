@@ -107,12 +107,30 @@ const usersController = {
     refuseDemandeRec: (req, res) => {
         const promise = User.refuseRec(req.query.id,req.session.user.organisation)
         .then((results)=>{
-            res.redirect('./')
+            res.redirect('../demandes')
         })
         .catch((error)=>{
             console.log(error)
         })
-    }
+    },
+    AddOrgAdmin: (req,res) => {
+        const data = {
+            siren: req.body.siren,
+            nom: req.body.nom,
+            rue: req.body.rue,
+            ville: req.body.ville,
+            region: req.body.region,
+            code_postal: req.body.code_postal,
+            pays: req.body.pays
+        }
+        const promise = org.create(data)
+        .then((results)=>{
+            res.render('partials/loading',{title: 'Add org',user: req.session.user, message: 'L\'organisation a été ajouté !'})
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    },
 
     
 }

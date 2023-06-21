@@ -8,9 +8,8 @@
   <div class="container">
 
     <div class="mb-5 mt-5 align-self-center">
-      <h1> Trouver votre job de rêve !</h1>
-      <h6>Vous cherchez un travail ? Parcourez nos dernières offres d'emploi et postulez aux meilleurs emplois
-        aujourd'hui.</h6>
+      <h1> Gestion en tant qu'admin !</h1>
+      <h6></h6>
     </div>
 
     <form class="input-group mb-3 mt-3">
@@ -29,7 +28,7 @@
       <div class="card-body">
         <!-- <h5 class="card-title">Special title treatment</h5> -->
         <p class="card-text"><%- result.fichePoste.description %></p>
-        <a href="recruteur/offre/id=<%= result.offre.num_offre %>" class="btn btn-outline-primary">Voir</a>
+        <a href="admin/offre/<%= result.offre.num_offre %>" class="btn btn-outline-primary">Voir</a>
        
       </div>
       <div class="card-footer text-muted">

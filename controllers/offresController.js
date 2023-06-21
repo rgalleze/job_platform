@@ -252,6 +252,18 @@ const offresController = {
             })
 
     },
+    deleteOffre: (req, res) =>{
+        const num_offre = parseInt(req.params.id)
+        const fichePoste = parseInt(req.query.fichePoste)
+        const promise = Offre.deleteOffre(num_offre,fichePoste)
+        .then((results)=> {
+            res.render('partials/loading',{title: 'Delete offre',user: req.session.user, message: 'Votre offre a été supprimé !'})
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+
+    },
     getCandidaturesOffre: (req, res) => {
         const promise = Offre.readCandidaturesOffre(req.params.id)
             .then((results) => {

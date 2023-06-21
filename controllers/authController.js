@@ -12,7 +12,7 @@ const authController = {
       else if (req.session.user.type_utilisateur == 'recruteur') {
         res.redirect('recruteur');
       }
-      else if (req.session.user.type_utilisateur == 'Administrateur') {
+      else if (req.session.user.type_utilisateur == 'admin') {
         res.redirect('admin');
       }
     },

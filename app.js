@@ -42,7 +42,7 @@ app.all("/candidat*", function (req, res, next) {
 });
 
 app.all("/admin*", function (req, res, next) {
-  if(req.session.user.type_utilisateur!='Administrateur'){
+  if(req.session.user.type_utilisateur!='admin'){
             res.send("Accés Non autorisé!")
         }else{next()}
 });
