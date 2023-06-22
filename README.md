@@ -1,9 +1,9 @@
 # SR10 Job portal
-# Projet de développement web avec structure MVC utilisant Node.js et Express
+### Projet de développement web avec structure MVC utilisant Node.js et Express
 
 Ce projet est une application web développée en utilisant la structure MVC (Modèle-Vue-Contrôleur) avec Node.js et Express. L'objectif principal de ce projet est de créer une application web robuste et évolutive en suivant les meilleures pratiques de développement.
 
-## Fonctionnalités principales
+### Fonctionnalités principales
 - Ajouter une organisation (entreprise, association ou toute entité qui recrute)
 - Ajouter des offres (+ éditer et supprimer une offre)
 - Lister les offres (+ ajouter des filtres sur la liste)
@@ -13,7 +13,7 @@ Ce projet est une application web développée en utilisant la structure MVC (Mo
 - Télécharger les dossiers des candidats
 
 
-## Technologies utilisées
+### Technologies utilisées
 
 Ce projet repose sur les technologies suivantes :
 
