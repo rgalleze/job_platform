@@ -1,4 +1,5 @@
 # SR10 Job portal
+Porjet de développement web avec une structure MVC, en utilisant Nodejs ainsi que le framework Express.
 ### Strcuture du projet (MVC)
 ```
 📦 job_platform
