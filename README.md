@@ -26,7 +26,7 @@ Ce projet repose sur les technologies suivantes :
 - Multer : un middleware pour gérer le téléchargement de fichiers dans les applications Node.js.
 - Bcrypt : une bibliothèque de hachage de mots de passe pour sécuriser les informations d'identification des utilisateurs.
 
-## Installation
+### Installation
 
 1. Clonez ce dépôt sur votre machine locale.
 2. Assurez-vous d'avoir Node.js et MongoDB installés sur votre machine.
