@@ -59,8 +59,9 @@
    │  └─ voirOffre.ejs
    └─ register.ejs
   ```
-
-
+## Use cases diagramme
+ ![](conception_et_modélisation/Diagramme_use_cases.png)
+ 
 ## Modélisation UML - MCD
  ![](conception_et_modélisation/MCD.png)
 
