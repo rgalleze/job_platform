@@ -62,7 +62,7 @@
 
 
 ## Modélisation UML - MCD
-
+ ![](conception_et_modélisation/MCD.png)
  ```plantuml
 @startuml
 class Utilisateur {
@@ -184,4 +184,4 @@ Fiche_poste "1" *-left- "*" Offre
  ```
  
  ## Modèle MLD
- ![](MLD.png)
+ ![](conception_et_modélisation/MLD.png)
