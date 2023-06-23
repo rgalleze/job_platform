@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "DEBUG=job_platform_v2:* npm run devstart"
+    "serverstart": "DEBUG=job_platform_v2:* npm run devstart",
+    "test": "jest"
+  },
+  "jest": {
+    "collectCoverage": true
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

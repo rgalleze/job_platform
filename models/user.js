@@ -7,7 +7,7 @@ create: (data, callback) => {
         'INSERT INTO Utilisateur SET ?',
         data,
         (error, results) => {
-            if (error) throw error;
+            if (error) throw new Error(error);
             return callback(null, results);
         }
     );
@@ -17,7 +17,7 @@ read: (email, callback) => {
         'SELECT * FROM Utilisateur WHERE email = ?',
         [email],
         (error, results) => {
-            if (error) throw error;
+            if (error)  throw new Error(error);
             return callback(null, results[0]);
         }
     );
@@ -46,7 +46,7 @@ readAll: (callback) => {
     db.query(
         'SELECT * FROM Utilisateur',
         (error, results) => {
-            if (error) throw error;
+            if (error)  throw new Error(error);
             return callback(null, results);
         }
     );
