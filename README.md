@@ -105,13 +105,17 @@ Ce projet repose sur les technologies suivantes :
  ![](conception_et_modélisation/MLD.png)
 
 ## Sécurité
- ### 1 - Violation de contrôle d’accès
+
+### 1 - Violation de contrôle d’accès
+
 Manque de contrôle d'accès au niveau fonctionnel : les applications doivent vérifier les droits d'accès au niveau fonctionnel sur le serveur lors de l'accès à chaque fonction. Si les demandes ne sont pas vérifiées, les attaquants seront en mesure de forger des demandes afin d'accéder à une fonctionnalité non autorisée.
 
 **Constat 1**
+
 Lors du diagnostic du site, on a remarqué qu'on ne vérifiait pas correctement les droits d'accès. Un utilisateur (candidat) pouvait avoir accès à l'espace admin ou recruteur en modifiant simplement l'URL.
 
 **Correctif**
+
 Nous avons donc mis en place un contrôle d'accès au niveau de `app.js` afin d'empêcher un utilisateur d'accéder à une fonctionnalité pour laquelle il n'a pas l'autorisation.
 
 ```javascript=
@@ -135,6 +139,7 @@ app.all("/admin*", function (req, res, next) {
 ```
 
 **Constat 2**
+
 On a pu remarquer une autre vulnérabilité : un recruteur peut avoir accès à des offres qui ne concernent pas son organisation juste en essayant des num_offres, exemple : 
 ```
 http://localhost:3000/recruteur/offre/39
@@ -142,6 +147,7 @@ http://localhost:3000/recruteur/offre/39
 Dans ce cas même si l'offre 39 ne fait pas partie des offres appartenant à l'organisation du recruteur, il poura la voir (éditer/supprimer)
 
 **Correctif**
+
 On a développé une fonction supplémentaire dans le modèle "offre" qui permet de récupérer les numéros d'offres pour une organisation donnée.
 ```javascript=
 getOffreIdByOrg: (id_org) => {
@@ -213,11 +219,13 @@ On a essayé de remonter vers le dossier `topsecret` pour avoir accès à `secre
 Et puis MAUVAISE SURPRISE : On a accès aux (faux) codes bancaires de Mr Lounis et Mr Akheraz
 
 **Correctif**
+
 Il faudrait nettoyer `fichier_cible` avant d'exécuter la requête, pour cela on a utilisé le framework `sanitize-filename`, on l'ajoute à notre controller à l'aide de la commande 
 ```javascript=
 const sanitize = require("sanitize-filename");
 ```
 **Code :** 
+
 ```javascript=
 getfile: (req, res) => {
     try {
