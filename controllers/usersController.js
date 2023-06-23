@@ -9,7 +9,7 @@ const usersController = {
             res.render('candidat/voirCandidatures',{title:'Candidatures',user: req.session.user,candidatures : results})
         ])
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
     },
     deleteCandidature: (req,res) =>{
@@ -18,7 +18,7 @@ const usersController = {
             res.redirect('../mesCandidatures')
         ])
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
 
         //
@@ -33,7 +33,7 @@ const usersController = {
             res.render('candidat/applyRecOrg',{title :'Devenir recruteur',user: req.session.user, orgs: results})
     })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
         
     },
@@ -49,7 +49,7 @@ const usersController = {
             res.render('partials/loading',{title: 'Devenir recruteur',user: req.session.user, message: 'Votre demande a été prise en compte !'})
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
 
     },
@@ -92,7 +92,7 @@ const usersController = {
             res.render('recruteur/demandesRec',{title: 'DDemandes',user: req.session.user,demandes : results})
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
     },
     acceptDemandeRec: (req, res) => {
@@ -101,7 +101,7 @@ const usersController = {
             res.redirect('./')
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
     },
     refuseDemandeRec: (req, res) => {
@@ -110,7 +110,7 @@ const usersController = {
             res.redirect('../demandes')
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
     },
     AddOrgAdmin: (req,res) => {
@@ -128,7 +128,7 @@ const usersController = {
             res.render('partials/loading',{title: 'Add org',user: req.session.user, message: 'L\'organisation a été ajouté !'})
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
     },
     getUsers: (req,res) => {
@@ -150,11 +150,11 @@ const usersController = {
     },
     UpdateStatutUser: (req,res) => {
         const promise = User.updateStatut(req.query.id,req.query.s)
-        .then((results)=>{
+        .then(()=>{
             res.redirect('./')
         })
         .catch((error)=>{
-            console.log(error)
+            throw new Error(error)
         })
 
     }

@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+
+
 const authController = {
   firstLoad: (req, res) => {
     if (!req.session.user) {
@@ -16,12 +18,15 @@ const authController = {
       res.redirect('admin');
     }
   },
+
   showLogin: (req, res) => {
     res.render('login', { title: 'login' });
   },
+
   showRegister: (req, res) => {
     res.render('register', { title: 'register' });
   },
+
   login: async (req, res) => {
     User.read(req.body.email, async (error, user) => {
       if (user == null) {
@@ -38,7 +43,9 @@ const authController = {
       }
     })
   },
+
   register: async (req, res) => {
+
     // On crée un schéma à suivre pour valider les inputs user
     const schema = Joi.object({
       nom: Joi.string().alphanum().min(3).max(30).required(),
@@ -54,7 +61,6 @@ const authController = {
         }),
       date_creation: Joi.date().required(),
       statut_compte: Joi.string().valid('actif'),
-      // Par défault le type d'utilisateur est candidat
       type_utilisateur: Joi.string().valid('candidat')
     });
 

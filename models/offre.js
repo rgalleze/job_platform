@@ -4,10 +4,15 @@ const db = require("./db");
 const Offre = {
     read: (id, callback) => {
         db.query(
-            "SELECT * FROM Offre inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  inner join Organisation on Organisation.siren = Offre.organisation where Offre.num_offre= ?",
+            `SELECT * FROM Offre 
+                inner join Fiche_poste 
+                    on Offre.fiche_poste = Fiche_poste.id  
+                inner join Organisation 
+                    on Organisation.siren = Offre.organisation 
+                where Offre.num_offre= ?`,
             [id],
             (error, results) => {
-                if (error) throw error;
+                if (error) throw new Error(error);
                 results = results.map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
@@ -20,10 +25,7 @@ const Offre = {
         );
     },
     search: (org, query, itemsPerPage, offset, callback) => {
-        //console.log(org)
-        if (!org){
-            org = ''
-        }
+        
         let countQuery = `SELECT COUNT(*) as total FROM Fiche_poste inner join Organisation on Fiche_poste.organisation = Organisation.siren
                             WHERE Fiche_poste.intitule LIKE ? 
                             AND date_ajout >= NOW() - INTERVAL ? DAY
@@ -41,15 +43,20 @@ const Offre = {
             )`
 
         let query2 = countQuery + `; SELECT * FROM Offre INNER JOIN ` + query1 + ` AS FP ON Offre.fiche_poste = FP.id  LIMIT ? OFFSET ? `
-        let date_interval = 1900
+        let date_interval = 1900 
+
+        // on récup les filtres 
         if (query.date_interval != '') date_interval = parseInt(query.date_interval)
         const searchq = '%' + query.search + '%'
         const typePoste = '%' + query.typePoste + '%'
-        let entreprise 
+        let entreprise
+        // Si c'est un recruteur qui fait une recherche on filtre les offres de son entreprise  
         if(org) entreprise = '%%'
-        else entreprise = '%' + query.entreprise + '%'
+        else {
+            entreprise = '%' + query.entreprise + '%'
+            org = ''
+        }
         
-        console.log(entreprise)
         db.query(query2,
             [searchq, date_interval, typePoste, entreprise, '%' + org + '%', searchq, date_interval, typePoste, entreprise, '%' + org + '%', itemsPerPage, offset],
             (error, results) => {
@@ -62,7 +69,6 @@ const Offre = {
                     const organisation = Object.fromEntries(data.slice(15));
                     return { offre: offre, organisation: organisation, fichePoste: fichePoste }
                 })
-                //console.log(results)
                 return callback(null, results[1], totalCount);
             }
         )
@@ -74,12 +80,6 @@ const Offre = {
             [],
             (error, results, fields) => {
                 if (error) throw error;
-                // L'idée c'est d'avoir chaque élément de results sous la forme suivante :
-                // {
-                // offre: {num_offre: , organisation: , date_validite: , etat: , fiche_poste: ,pcs_demandees: },
-                // organisation: { siren: ,nom: ,rue: ,ville: ,region: ,code_postal: ,pays:},
-                // fichePoste: {id: ,date_ajout:, intitule: ,responsable: ,type_metier: ,rythme: ,fourchette_min: ,fourchette_max: ,description: }
-                // }
                 results = results.map(function (result) {
                     const data = Object.entries(result);
                     const offre = Object.fromEntries(data.slice(0, 6));
@@ -92,24 +92,18 @@ const Offre = {
         )
     },
     readWithLimit: (org, itemsPerPage, offset, callback) => {
-
+        // Si c'est un recruteur on filtre les offres de son entreprise  
         if (!org) org = ''
         db.query(
             `SELECT COUNT(*) as total FROM Fiche_poste where organisation like ? ;
-            SELECT * FROM Offre 
-            inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  
-            inner join Organisation on Organisation.siren = Offre.organisation
-            where Offre.organisation like ? 
-            LIMIT ? OFFSET ?`,
-            ['%' + org + '%', '%' + org + '%', itemsPerPage, offset],
+                SELECT * FROM Offre 
+                    inner join Fiche_poste on Offre.fiche_poste = Fiche_poste.id  
+                    inner join Organisation on Organisation.siren = Offre.organisation
+                where Offre.organisation like ? 
+                LIMIT ? OFFSET ?`,
+            ['%'+org+'%','%'+org +'%', itemsPerPage, offset],
             (error, results) => {
-                if (error) throw error;
-                // L'idée c'est d'avoir chaque élément de results sous la forme suivante :
-                // {
-                // offre: {num_offre: , organisation: , date_validite: , etat: , fiche_poste: ,pcs_demandees: },
-                // organisation: { siren: ,nom: ,rue: ,ville: ,region: ,code_postal: ,pays:},
-                // fichePoste: {id: ,date_ajout:, intitule: ,responsable: ,type_metier: ,rythme: ,fourchette_min: ,fourchette_max: ,description: }
-                // }
+                if (error) throw new Error(error);
                 const totalCount = results[0][0].total;
                 results[1] = results[1].map(function (result) {
                     const data = Object.entries(result);
@@ -146,9 +140,7 @@ const Offre = {
         return new Promise((resolve, reject) => {
             db.query('SELECT * from Dossier_candidature Where offre = ? and utilisateur = ?', [data.offre, data.utilisateur],
                 (error, results) => {
-                    //console.log(results)
                     if (results.length != 0) {
-                        //console.log(results)
                         resolve('Déjà candidaté')
                     }
                     else {

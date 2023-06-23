@@ -43,11 +43,16 @@ const generateBoostrapPaginator = (req, currentPage, itemsPerPage, totalCount) =
     });
 };
 
+
 const offresController = {
     getOffres: (req, res) => {
+
+        // Préparation de la pagination
         const itemsPerPage = 5;
         const currentPage = parseInt(req.query.page) || 1;
         const offset = (currentPage - 1) * itemsPerPage;
+
+        // Si l'utilisateur éffectue une recherche
         if (req.query.search || req.query.date_interval || req.query.typePoste || req.query.entreprise) {
             Offre.search(req.session.user.organisation,req.query, itemsPerPage, offset, (err, results, totalCount) => {
                 if (err) {
@@ -68,11 +73,9 @@ const offresController = {
         } else {
                 Offre.readWithLimit(req.session.user.organisation,itemsPerPage, offset, (err, results, totalCount) => {
                     if (err) {
-                        console.error('Error fetching offres: ', err);
-                        res.redirect('/');
+                        throw new Error('Error fetching offres: ', err);
                     } else {
                         const boostrapPaginator = generateBoostrapPaginator(req, currentPage, itemsPerPage, totalCount);
-                        //console.log(results)
                         res.render(req.session.user.type_utilisateur + '/dashboard', {
                             title: 'Accueil',
                             offres: results,
@@ -89,8 +92,7 @@ const offresController = {
     voirOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
             if (err) {
-                console.error(err);
-                res.redirect('/');
+                throw new Error(err)
             }
             else {
                 res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
@@ -100,11 +102,9 @@ const offresController = {
     showCandidaterOffre: (req, res) => {
         Offre.read(req.params.id, (err, result) => {
             if (err) {
-                console.error(err);
-                res.redirect('/');
+                throw new Error(err)
             }
             else {
-                console.log(req.session.uploaded_files)
                 if (req.session.uploaded_files == undefined) {
                     console.log('Init uploaded files array');
                     req.session.uploaded_files = [];
@@ -119,6 +119,7 @@ const offresController = {
     },
     addOffre: (req, res) => {
 
+        // L'idéal serait de valider les inputs comme dans le controllers auth avec Joi, mais par manque de temps on le fait pas ici...
         const Fiche_poste = {
             organisation: req.session.user.organisation,
             intitule: req.body.intitule,
@@ -141,12 +142,11 @@ const offresController = {
             .then((results) => {
                 offre.fiche_poste = results.insertId;
                 const promise2 = Offre.createOffre(offre)
-                    .then((results) => {
-                        //console.log(results);
+                    .then(() => {
                         res.render('partials/loading', { title: 'Accueil', message: 'L\'offre a été ajouté ! Vous allez être redirigé vers l\'accueil.' });
                     })
                     .catch((error) => {
-                        console.log(error)
+                        throw new Error(error)
                     })
             })
             .catch((error) => {
@@ -157,13 +157,12 @@ const offresController = {
 
 
     },
-    upload: (req, res, next) => {
+    upload: (req, res) => {
         const uploaded_file = req.file
 
         if (!uploaded_file) {
             res.render('candidat/candidaterOffre', { title: 'Postuler', user: req.session.user, files_array: req.session.uploaded_files, upload_error: 'Merci de sélectionner le fichier à charger !' });
         } else {
-            //console.log(uploaded_file.originalname,' => ',uploaded_file.filename);
             req.session.uploaded_files.push(uploaded_file.filename);
             res.redirect('../postuler')
         }
@@ -201,7 +200,6 @@ const offresController = {
             offre: req.params.id,
             pathFiles: pathFiles
         }
-        //console.log(data_candidature)
         const promise = Offre.candidaterOffre(data_candidature)
             .then((results) => {
                 if (results == 'Déjà candidaté') {
