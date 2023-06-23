@@ -45,7 +45,6 @@ const authController = {
   },
 
   register: async (req, res) => {
-
     // On crée un schéma à suivre pour valider les inputs user
     const schema = Joi.object({
       nom: Joi.string().alphanum().min(3).max(30).required(),

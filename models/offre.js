@@ -197,6 +197,16 @@ const Offre = {
             })
         })
 
+    },
+    getOffreIdByOrg: (id_org) => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT num_offre FROM Offre where organisation = ?`,
+                [id_org],
+                (error, results) => {
+                    if (error) reject(error);
+                    else resolve(results)
+                })
+        })
     }
     
 

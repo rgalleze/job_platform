@@ -1,6 +1,7 @@
 const { query } = require('express');
 const Offre = require('../models/offre');
 const pagination = require('pagination');
+const sanitize = require("sanitize-filename");
 const fs = require('fs');
 const { error } = require('console');
 
@@ -90,12 +91,28 @@ const offresController = {
         }
     },
     voirOffre: (req, res) => {
+        /* Contrôle d'accès */
+        if(req.session.user.type_utilisateur == 'recruteur'){
+            let offre_ids = []
+            const promise = Offre.getOffreIdByOrg(req.session.user.organisation)
+            .then((results) => {
+                results.forEach((result)=>{
+                    offre_ids.push(result.num_offre)
+                })
+                if(!offre_ids.includes(parseInt(req.params.id)  )){
+                    res.send('Vous n\'êtes pas autorisé à consulter cette offre')
+                }
+                
+            })
+        }
+        /* Fin contrôle d'accès */
         Offre.read(req.params.id, (err, result) => {
             if (err) {
                 throw new Error(err)
             }
             else {
-                res.render(req.session.user.type_utilisateur + '/voirOffre', { title: 'Offre', user: req.session.user, result: result });
+                res.render(req.session.user.type_utilisateur + '/voirOffre', 
+                { title: 'Offre', user: req.session.user, result: result });
             }
         })
     },
@@ -168,13 +185,15 @@ const offresController = {
         }
 
     },
-    getfile: (req, res, next) => {
+    getfile: (req, res) => {
         try {
-            res.download('./mesfichiers/' + req.query.fichier_cible);
+            /* Éviter injection */
+            var filename = sanitize(req.query.fichier_cible);
+            /* ---------------- */
+            res.download('./mesfichiers/' + filename);
         } catch (error) {
-            res.send('Une erreur est survenue lors du téléchargement de ' + req.query.fichier_cible + ' : ' + error);
+            res.send('Une erreur est survenue lors du téléchargement de ' + filename + ' : ' + error);
         }
-
     },
     deletefile: (req, res) => {
         fs.unlink('./mesfichiers/' + req.query.fichier_supp, (err) => {

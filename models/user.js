@@ -2,16 +2,16 @@ const db = require("./db.js");
 
 
 const user = {
-create: (data, callback) => {
-    db.query(
-        'INSERT INTO Utilisateur SET ?',
-        data,
-        (error, results) => {
-            if (error) throw new Error(error);
-            return callback(null, results);
-        }
-    );
-},
+    create: (data, callback) => {
+        db.query(
+            'INSERT INTO Utilisateur SET ?',
+            data,
+            (error, results) => {
+                if (error) throw error;
+                return callback(null, results);
+            }
+        );
+    },
 read: (email, callback) => {
     db.query(
         'SELECT * FROM Utilisateur WHERE email = ?',
